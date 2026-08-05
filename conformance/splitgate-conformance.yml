@@ -1,0 +1,56 @@
+generated: '2026-08-05'
+method: derived
+source: openapi/splitgate-third-party-openapi-original.yml
+notes: >-
+  Derived from the contract only. 1047 Games publishes no compliance program,
+  trust center or certification list for the Third-Party API — probe-security-programs
+  found neither a trust center nor a vulnerability-disclosure policy — so NO
+  `Compliance` pointer is emitted in apis.yml.
+standards:
+- id: openapi-3.0
+  conforms: true
+  evidence: openapi 3.0.1 document published at github.com/1047Games/sdk-api/openapi.yaml
+- id: oauth2
+  conforms: false
+  evidence: securitySchemes declares only http/bearer; no oauth2 flows, no authorization
+    server metadata
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on every reachable host
+- id: jwt-rfc7519
+  conforms: true
+  evidence: securitySchemes.bearerToken declares bearerFormat jwt
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: errors are application/json with a custom reason/message/domain/metadata
+    envelope, not application/problem+json
+- id: google-api-error-model
+  conforms: true
+  evidence: >-
+    error.status is a discriminated union of the canonical gRPC status names
+    (InvalidArgument, NotFound, PermissionDenied, Unauthenticated,
+    ResourceExhausted, FailedPrecondition, Aborted, OutOfRange, Unimplemented,
+    Internal, Unavailable, DataLoss) with google.rpc errdetails-shaped violation
+    types (RequestViolation, PreconditionViolation, QuotaViolation)
+- id: cursor-pagination
+  conforms: true
+  evidence: opaque `anchor` request param + `nextPageAnchor` / `totalItemCount` response
+    fields on searchPlayers and getPlayerMatches
+- id: idempotency
+  conforms: not-applicable
+  evidence: read-only API, all five operations are GET; no write surface to make idempotent
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on splitgate.com and 1047games.com
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: no deprecation or sunset policy published
+- id: rfc8615-well-known
+  conforms: false
+  evidence: no /.well-known/ documents served on any host
+- id: asyncapi
+  conforms: not-applicable
+  evidence: no event, streaming or webhook surface is published
+- id: json-api
+  conforms: false
+  evidence: plain JSON envelopes, no JSON:API media type or document structure

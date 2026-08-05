@@ -1,0 +1,17 @@
+generated: '2026-08-05'
+method: generated
+source: openapi/splitgate-third-party-openapi-original.yml
+notes: >-
+  1047 Games publishes no AGENTS.md or agent skills. These are generated from the
+  provider's own OpenAPI — every operationId, parameter, field and enum named in a
+  skill is verbatim from openapi/splitgate-third-party-openapi-original.yml. The
+  five published operations split cleanly into two flows.
+skills:
+- file: splitgate-player-lookup.md
+  name: Look up a Splitgate player's stats and ranks
+  api: openapi/splitgate-third-party-openapi-original.yml
+  operations: [searchPlayers, getPlayerStats, getPlayerRanks]
+- file: splitgate-match-history.md
+  name: Walk a Splitgate player's match history into full match detail
+  api: openapi/splitgate-third-party-openapi-original.yml
+  operations: [searchPlayers, getPlayerMatches, getMatchDetails]

@@ -1,0 +1,64 @@
+generated: '2026-08-05'
+method: generated
+source: openapi/splitgate-third-party-openapi-original.yml
+description: Recommended x-agentic-access execution contracts, classified heuristically from
+  the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
+  audience per deployment. See research/curity/agentic-governance/.
+summary:
+  operations: 5
+  by_action_class:
+    connected: 5
+  by_consequence:
+    read: 5
+  human_in_the_loop_required: 0
+operations:
+- path: /v1/search/players
+  method: get
+  operationId: searchPlayers
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/game/splitgate2/players/{playerId}/stats
+  method: get
+  operationId: getPlayerStats
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/game/splitgate2/players/{playerId}/ranks
+  method: get
+  operationId: getPlayerRanks
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/game/splitgate2/players/{playerId}/matches
+  method: get
+  operationId: getPlayerMatches
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/game/splitgate2/matches/{matchId}
+  method: get
+  operationId: getMatchDetails
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none

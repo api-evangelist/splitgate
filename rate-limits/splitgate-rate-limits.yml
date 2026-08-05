@@ -1,0 +1,42 @@
+generated: '2026-08-05'
+method: derived
+source: openapi/splitgate-third-party-openapi-original.yml
+notes: >-
+  1047 Games publishes NO numeric rate limits for the Third-Party API. The
+  contract nevertheless models quota exhaustion: components.schemas.ResourceExhausted
+  carries QuotaViolation[] with `subject` (the throttled path) and `description`.
+  The spec's own example is subject "/v1/game/splitgate2/matches/{matchId}",
+  description "The client has exceeded the maximum number of match detail requests
+  per hour." — evidence that per-operation hourly quotas exist without any
+  published number. Recorded honestly with no limit_count.
+published_limits: false
+rate_limits: []
+signaling:
+  headers: none documented
+  retry_after: not documented
+  status_code: >-
+    Not declared. No operation lists a 429 response even though ResourceExhausted
+    is a modeled status detail.
+  in_band:
+    envelope_field: error.status
+    value: ResourceExhausted
+    detail_field: error.violations[] (QuotaViolation)
+    fields:
+    - subject — the path the quota applies to
+    - description — human-readable statement of the exceeded quota
+inferred_shape:
+  granularity: per-operation
+  window: hourly (per the spec's own QuotaViolation example)
+  confidence: low
+  note: Inferred from a documentation example only; no published policy confirms it.
+pagination_caps:
+  searchPlayers:
+    limit_default: 25
+    limit_max: 100
+  getPlayerMatches:
+    limit_default: 25
+    limit_max: 100
+gaps:
+- No rate-limit reference page exists on any 1047 Games surface.
+- No 429 response is wired into the OpenAPI contract.
+- No RateLimit-* / Retry-After headers are documented.

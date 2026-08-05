@@ -1,0 +1,51 @@
+generated: '2026-08-05'
+method: derived
+source: openapi/splitgate-third-party-openapi-original.yml, https://github.com/1047Games/sdk-api
+  commit history
+versioning:
+  scheme: uri-path
+  current: v1
+  spec_version: 1.0.0
+  docs: https://1047games.github.io/sdk-api/
+  note: >-
+    The OpenAPI `info.version` has stayed 1.0.0 across every revision of the
+    document; the only version signal in the contract is the /v1 path prefix.
+    Game titles are addressed as a path segment (/v1/game/splitgate2/...), not as
+    an API version.
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecated_operations: []
+  note: >-
+    No deprecation or sunset policy is published for the Third-Party API. No
+    operation in the spec carries `deprecated: true`.
+sla:
+  url: null
+  uptime_target: null
+status_page: null
+status_page_note: >-
+  No status page was found. status.splitgate.com does not resolve; no status link
+  appears on splitgate.com, 1047games.com, the Zendesk help center, or the sdk-api
+  repository.
+support:
+  help_center: https://support.splitgate.com/hc
+  community: https://discord.com/invite/splitgate
+  api_issue_tracker: https://github.com/1047Games/sdk-api/issues
+availability:
+  probe_date: '2026-08-05'
+  declared_server: https://api.1047games.com
+  resolves: false
+  detail: >-
+    api.1047games.com is a CNAME to
+    api-third-party-prod.maverick-global.prod.1047games.com, which returns
+    NXDOMAIN. The production endpoint declared in the provider's own
+    OpenAPI servers[] did not resolve on the probe date, so no live call could be
+    made. This coincides with the December 2025 relaunch of Splitgate 2 as
+    SPLITGATE: Arena Reloaded — the spec's paths are still scoped to
+    /v1/game/splitgate2/.
+history:
+  first_published: '2025-04-26'
+  last_spec_change: '2025-12-16'
+  source: https://github.com/1047Games/sdk-api/commits/master/openapi.yaml
+  see: changelog/splitgate-changelog.yml

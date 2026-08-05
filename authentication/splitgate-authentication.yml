@@ -1,0 +1,13 @@
+generated: '2026-08-05'
+method: derived
+source: openapi/splitgate-third-party-openapi-original.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerToken
+  type: http
+  scheme: bearer
+  bearerFormat: jwt
+  sources:
+  - openapi/splitgate-third-party-openapi-original.yml

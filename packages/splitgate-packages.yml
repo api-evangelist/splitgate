@@ -1,0 +1,29 @@
+generated: '2026-08-05'
+method: searched
+source: npm registry search, PyPI, pkg.go.dev, RubyGems, Packagist, crates.io, NuGet,
+  github.com/1047Games, https://1047games.github.io/sdk-api/
+official_package_count: 0
+notes: >-
+  1047 Games ships NO first-party client library for the Third-Party API. The
+  official surface is the OpenAPI document and the Swagger UI reference in
+  github.com/1047Games/sdk-api — there is no SDK repository in the 1047Games
+  GitHub organization (its four public repos are p4transfer, setup-build-matrix,
+  nats-kafka and sdk-api), and registry searches on npm, PyPI, RubyGems,
+  Packagist, crates.io, NuGet and pkg.go.dev return no 1047 Games-authored
+  package. Because there is no official SDK, this repo deliberately carries NO
+  `SDKs` pointer in apis.yml.
+packages:
+- language: javascript
+  registry: npm
+  name: splitgate.js
+  url: https://www.npmjs.com/package/splitgate.js
+  install: npm install splitgate.js
+  version: 3.3.0
+  published: '2023-01-02'
+  official: false
+  note: >-
+    Community wrapper by an independent author (PADO), last published January
+    2023. It predates the 2025 Third-Party API and targets the original Steam
+    release of Splitgate, not api.1047games.com. Listed for completeness only —
+    it is not maintained by 1047 Games and is not a client for the spec in
+    openapi/.

@@ -1,0 +1,132 @@
+generated: '2026-08-05'
+method: derived
+source: openapi/splitgate-third-party-openapi-original.yml
+api: 1047 Games Third-Party API
+summary: >-
+  Two root entities — Player and Match — joined by participation. Statistics are a
+  single polymorphic value object (SummaryPlayerStats) reused at four different
+  aggregation levels selected by a discriminator, which is the most notable shape
+  in this model: the same stat block describes a career, a season, a game mode, or
+  one match.
+identifiers:
+  playerId:
+    type: uuid
+    example: 09b74ba4-408f-4121-bf50-7edf11332a65
+  matchId:
+    type: uuid
+    example: 2443ceef-3e4c-45a3-8d18-ff87e22c7cb6
+  teamId:
+    type: uuid
+    example: b0f57b43-9ef1-4f13-9066-f04f3bbad86a
+  slug_fields: [matchTypeSlug, gameModeSlug, playlistSlug, mapSlug, rankSlug, seasonSlug]
+  slug_note: >-
+    Reference data (game modes, playlists, maps, ranks, seasons) is addressed by
+    human-readable slug. No endpoint enumerates the slug vocabularies, so valid
+    values can only be learned from observed responses.
+entities:
+- name: Player
+  schema: PlayerSearchResult
+  fields: [playerId, displayName]
+  read_by: [searchPlayers]
+- name: PlayerStats
+  schema: SummaryPlayerStats
+  fields: [summedOver, updatedAt, matchesPlayed, wins, losses, kills, deaths, suicides,
+    assists, damage, score, xp]
+  read_by: [getPlayerStats]
+  note: Also embedded inside PlayerMatch and MatchPlayerDetails.
+- name: StatsScope
+  schema: StatsSummedOver
+  polymorphic: true
+  discriminator: type
+  variants:
+  - {type: Career, schema: StatsSummedOverCareer}
+  - {type: Season, schema: StatsSummedOverSeason, key: seasonSlug}
+  - {type: GameMode, schema: StatsSummedOverGameMode, key: matchTypeSlug}
+  - {type: Match, schema: StatsSummedOverMatch, key: matchId}
+- name: PlayerRank
+  schema: PlayerRank
+  fields: [matchTypeSlug, rankSlug, placement, updatedAt]
+  read_by: [getPlayerRanks]
+- name: RankPlacement
+  schema: PlayerRankPlacement
+  polymorphic: true
+  variants:
+  - {schema: AbsolutePlayerRankPlacement, fields: [absolutePoints, absolutePlacement,
+      maximumPlacement]}
+  - {schema: DivisionalPlayerRankPlacement, fields: [divisionPoints, divisionPointCeiling,
+      divisionPlacement, maximumDivision]}
+- name: PlayerMatch
+  schema: PlayerMatch
+  fields: [matchId, joinedAt, leftAt, playlistSlug, mapSlug, platform, stats]
+  read_by: [getPlayerMatches]
+  note: The player's-eye view of a match — participation window plus that player's
+    stats for it.
+- name: Match
+  schema: MatchDetails
+  fields: [matchId, status, updatedAt, startedAt, endedAt, matchTypeSlug, gameModeSlug,
+    playlistSlug, mapSlug, teams]
+  status_enum: [InProgress, Finished, Crashed, Abandoned]
+  read_by: [getMatchDetails]
+- name: MatchTeam
+  schema: MatchTeamDetails
+  fields: [teamId, placement, members]
+- name: MatchPlayer
+  schema: MatchPlayerDetails
+  fields: [playerId, displayName, platform, stats]
+relationships:
+- from: Player
+  to: PlayerStats
+  kind: has_one
+  via: playerId (path)
+  operation: getPlayerStats
+- from: Player
+  to: PlayerRank
+  kind: has_many
+  via: playerId (path)
+  operation: getPlayerRanks
+  note: One rank row per ranked match type.
+- from: Player
+  to: PlayerMatch
+  kind: has_many
+  via: playerId (path)
+  operation: getPlayerMatches
+  paginated: true
+- from: PlayerMatch
+  to: Match
+  kind: belongs_to
+  via: matchId
+  operation: getMatchDetails
+  note: The join that lets a client walk from a player's history into full match detail.
+- from: PlayerMatch
+  to: PlayerStats
+  kind: has_one
+  via: stats ($ref SummaryPlayerStats, summedOver.type = Match)
+- from: Match
+  to: MatchTeam
+  kind: has_many
+  via: teams[]
+- from: MatchTeam
+  to: MatchPlayer
+  kind: has_many
+  via: members[]
+- from: MatchPlayer
+  to: Player
+  kind: belongs_to
+  via: playerId
+- from: MatchPlayer
+  to: PlayerStats
+  kind: has_one
+  via: stats ($ref SummaryPlayerStats, summedOver.type = Match)
+- from: PlayerStats
+  to: StatsScope
+  kind: has_one
+  via: summedOver (discriminated by type)
+- from: PlayerRank
+  to: RankPlacement
+  kind: has_one
+  via: placement (oneOf absolute | divisional)
+traversal:
+  canonical_path: searchPlayers -> playerId -> getPlayerMatches -> matchId -> getMatchDetails
+  note: >-
+    There is no reverse lookup from a match to a player search, and no endpoint
+    returns a leaderboard; ranks are only retrievable one player at a time.

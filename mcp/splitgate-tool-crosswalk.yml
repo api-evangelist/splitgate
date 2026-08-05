@@ -1,0 +1,58 @@
+generated: '2026-08-05'
+method: derived
+source: mcp/splitgate-mcp.yml, openapi/splitgate-third-party-openapi-original.yml
+notes: >-
+  1047 Games publishes no MCP server and no GraphQL endpoint, so this crosswalk
+  binds the DERIVED candidate tool set in mcp/splitgate-mcp.yml to the real
+  OpenAPI operations it was generated from. The binding is therefore 1:1 and
+  exact by construction — every tool inherits its backing operation's parameters
+  as its real inputSchema, and there are no MCP-only or REST-only divergences to
+  record. When 1047 Games ships an actual MCP server this file should be
+  re-derived against its live tools/list.
+surfaces:
+  openapi:
+    file: openapi/splitgate-third-party-openapi-original.yml
+    gated: false
+    operations: 5
+  graphql:
+    endpoint: null
+    note: No GraphQL surface is published.
+  mcp:
+    url: null
+    gated: null
+    note: No MCP server is published; tools are a derived candidate set.
+crosswalk:
+- tool: search_players
+  category: players
+  rest: [searchPlayers]
+  binding: rest
+  confidence: high
+  note: Derived 1:1 from the operation; inputSchema is term/limit/anchor.
+- tool: get_player_stats
+  category: players
+  rest: [getPlayerStats]
+  binding: rest
+  confidence: high
+- tool: get_player_ranks
+  category: players
+  rest: [getPlayerRanks]
+  binding: rest
+  confidence: high
+- tool: get_player_matches
+  category: players
+  rest: [getPlayerMatches]
+  binding: rest
+  confidence: high
+- tool: get_match_details
+  category: matches
+  rest: [getMatchDetails]
+  binding: rest
+  confidence: high
+mcp_only: []
+rest_only: []
+coverage:
+  tools_named: 5
+  tools_bound: 5
+  mcp_only: 0
+  rest_operations_total: 5
+  rest_operations_with_tool: 5

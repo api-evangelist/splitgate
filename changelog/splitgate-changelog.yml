@@ -1,0 +1,57 @@
+generated: '2026-08-05'
+method: searched
+source: https://github.com/1047Games/sdk-api/commits/master/openapi.yaml
+notes: >-
+  1047 Games publishes no prose changelog or release-notes page for the
+  Third-Party API. The dated, public revision history of the contract is the
+  commit history of openapi.yaml in the studio's own sdk-api repository, which is
+  what is captured here. Entries record the commit date and the observed diff
+  size; the OpenAPI `info.version` has never been bumped off 1.0.0, so there are
+  no released version numbers to record.
+scheme: none-published
+current_version: 1.0.0
+spec_file: https://github.com/1047Games/sdk-api/blob/master/openapi.yaml
+entries:
+- date: '2025-12-16'
+  commit: c9140650
+  title: Updated spec (#7)
+  size: +2 / -2 lines
+  breaking: false
+- date: '2025-12-04'
+  commit: 583f2fe2
+  title: Updated openapi spec (#6)
+  size: +299 / -10 lines
+  breaking: unknown
+  highlights:
+  - Largest revision since the first draft — the bulk of the current error model
+    and schema detail lands here.
+- date: '2025-05-20'
+  commit: c49b3c37
+  title: tweak display name search to match current implementation
+  size: +79 / -80 lines
+  breaking: unknown
+  highlights:
+  - searchPlayers display-name matching brought in line with the deployed implementation.
+- date: '2025-05-16'
+  commit: d3e6765d
+  title: Update api doc to match implementation (#3)
+  size: +35 / -28 lines
+  breaking: false
+- date: '2025-04-26'
+  commit: 5305a281
+  title: First draft of third-party API spec (#2)
+  size: +617 / -89 lines
+  breaking: true
+  highlights:
+  - Renamed /v1/game/splitgate2/players/{playerId}/rank to .../ranks.
+  - Added operationIds searchPlayers, getPlayerStats, getPlayerRanks, getPlayerMatches,
+    getMatchDetails.
+  - Added the `anchor` cursor parameter to getPlayerMatches.
+- date: '2025-04-26'
+  commit: e26efdc5
+  title: add initial api definition
+  size: +768 / -0 lines
+  breaking: false
+  highlights:
+  - Initial publication of the five-operation contract and the GitHub Pages Swagger
+    UI.

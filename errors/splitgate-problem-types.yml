@@ -1,0 +1,97 @@
+generated: '2026-08-05'
+method: derived
+source: openapi/splitgate-third-party-openapi-original.yml
+format: custom
+media_type: application/json
+notes: >-
+  The 1047 Games Third-Party API does NOT use RFC 9457 problem+json. It uses a
+  Google/gRPC-style error model: a flat envelope of reason / message / domain /
+  metadata plus a discriminated `error` object whose `status` string selects one
+  of twelve canonical gRPC status shapes. Every operation returns the same
+  ErrorResponse schema for every failure code.
+envelope:
+  schema: ErrorResponse
+  required: [reason, message, domain, metadata, error]
+  fields:
+  - name: reason
+    description: Short, non-localized, machine-readable reason code (e.g. INVALID_REQUEST).
+      Intended as the localization key for user-facing messages.
+  - name: message
+    description: High-level developer-facing message, English only, not localized.
+  - name: domain
+    description: Logical domain the error originated in.
+    enum: [Players, Matches]
+  - name: metadata
+    description: String key/value map of extra context about the error, the request,
+      or system state (e.g. playerId, matchId).
+  - name: error
+    description: Discriminated detail object; the `status` property selects the shape.
+status_details:
+  discriminator: status
+  variants:
+  - status: InvalidArgument
+    detail: violations[] of RequestViolation (field, description, reason)
+  - status: NotFound
+    detail: none
+  - status: PermissionDenied
+    detail: none
+  - status: Unauthenticated
+    detail: none
+  - status: ResourceExhausted
+    detail: violations[] of QuotaViolation (subject, description) — the quota/rate-limit
+      signal
+  - status: FailedPrecondition
+    detail: violations[] of PreconditionViolation (type, subject, description)
+  - status: Aborted
+    detail: none
+  - status: OutOfRange
+    detail: none
+  - status: Unimplemented
+    detail: none
+  - status: Internal
+    detail: none
+  - status: Unavailable
+    detail: none
+  - status: DataLoss
+    detail: none
+problems:
+- status: 400
+  title: Bad Request
+  status_detail: InvalidArgument
+  schema: ErrorResponse
+  source_operations: [searchPlayers, getPlayerStats, getPlayerRanks, getPlayerMatches,
+    getMatchDetails]
+- status: 401
+  title: Unauthorized
+  status_detail: Unauthenticated
+  schema: ErrorResponse
+  remediation: Send a valid bearer JWT in the Authorization header.
+  source_operations: [searchPlayers, getPlayerStats, getPlayerRanks, getPlayerMatches,
+    getMatchDetails]
+- status: 403
+  title: Forbidden
+  status_detail: PermissionDenied
+  schema: ErrorResponse
+  remediation: The presented token is valid but is not authorized for this resource.
+  source_operations: [searchPlayers, getPlayerStats, getPlayerRanks, getPlayerMatches,
+    getMatchDetails]
+- status: 404
+  title: Not Found
+  status_detail: NotFound
+  schema: ErrorResponse
+  note: Declared as "Player Not Found" on the three player operations and "Match Not
+    Found" on getMatchDetails. Not declared on searchPlayers.
+  source_operations: [getPlayerStats, getPlayerRanks, getPlayerMatches, getMatchDetails]
+- status: 500
+  title: Internal Server Error
+  status_detail: Internal
+  schema: ErrorResponse
+  source_operations: [searchPlayers, getPlayerStats, getPlayerRanks, getPlayerMatches,
+    getMatchDetails]
+gaps:
+- >-
+  No 429 response is declared on any operation even though ResourceExhausted /
+  QuotaViolation exist in components.schemas — the quota shape is modeled but not
+  wired to a status code in the contract.
+- >-
+  No 503 response is declared even though Unavailable is a modeled status detail.

@@ -1,0 +1,88 @@
+generated: '2026-08-05'
+method: derived
+source: openapi/splitgate-third-party-openapi-original.yml
+api: 1047 Games Third-Party API
+authentication:
+  style: http bearer
+  scheme: bearerToken
+  bearer_format: jwt
+  applied: >-
+    globally — root-level `security` requires bearerToken, with no per-operation
+    override
+  see: authentication/splitgate-authentication.yml
+  note: The contract does not document how a third party obtains the JWT; no OAuth
+    authorization server, no key-issuance page and no /.well-known/openid-configuration
+    were found.
+idempotency:
+  supported: false
+  idempotency_key_header: none
+  note: >-
+    The API is entirely read-only — all five operations are GET, so every call is
+    safe and naturally repeatable — but there is NO idempotency-key contract,
+    because there are no write operations to protect. No `Idempotency` pointer is
+    emitted in apis.yml for this reason.
+pagination:
+  style: cursor
+  request_params:
+  - name: limit
+    in: query
+    default: 25
+    minimum: 1
+    maximum: 100
+  - name: anchor
+    in: query
+    description: Opaque page anchor returned by the previous response. Anchors are
+      only valid in the context of a single query.
+  response_fields:
+  - name: items
+    description: The page of results.
+  - name: nextPageAnchor
+    description: Opaque anchor to pass as `anchor` for the next page. Absent/empty
+      on the last page.
+  - name: totalItemCount
+    description: Total number of matching items across all pages.
+  operations: [searchPlayers, getPlayerMatches]
+  not_paginated: [getPlayerStats, getPlayerRanks, getMatchDetails]
+filtering_and_expansion:
+  field_expansion: not supported
+  sparse_fieldsets: not supported
+  filtering: >-
+    Only searchPlayers takes a filter (`term`, matched case-insensitively against
+    player display name or exact player id, ordered by relevance).
+identifiers:
+  playerId: UUID v4 (example 09b74ba4-408f-4121-bf50-7edf11332a65)
+  matchId: UUID v4 (example 2443ceef-3e4c-45a3-8d18-ff87e22c7cb6)
+  slugs: >-
+    Reference data is addressed by slug rather than id — matchTypeSlug,
+    gameModeSlug, playlistSlug, mapSlug, rankSlug, seasonSlug. No slug vocabulary
+    endpoint is published, so slug values must be discovered from responses.
+versioning:
+  scheme: uri-path
+  current: v1
+  game_segment: >-
+    Game-scoped paths carry the title in the path (/v1/game/splitgate2/...), so a
+    new title is a new path segment rather than a new API version.
+  see: lifecycle/splitgate-lifecycle.yml
+error_envelope:
+  format: custom (Google/gRPC status model)
+  media_type: application/json
+  shape: reason + message + domain + metadata + discriminated error.status
+  see: errors/splitgate-problem-types.yml
+rate_limit_signaling:
+  headers_documented: none
+  in_band_signal: ResourceExhausted status detail carrying QuotaViolation[] (subject,
+    description)
+  see: rate-limits/splitgate-rate-limits.yml
+request_tracing:
+  request_id_header: not documented
+  note: The `metadata` map on ErrorResponse is the only correlation surface the contract
+    describes.
+content_negotiation:
+  request_bodies: none (read-only API)
+  response_media_type: application/json
+gaps:
+- No 429 status code is declared anywhere in the contract despite a modeled quota
+  violation shape.
+- No rate-limit response headers (RateLimit-*, Retry-After, X-RateLimit-*) are documented.
+- No request-id / correlation-id header is documented.
+- No documented path to obtain the required bearer JWT.

@@ -1,0 +1,85 @@
+generated: '2026-08-05'
+method: probed
+source: live GET of /.well-known/* on every Splitgate / 1047 Games host
+notes: >-
+  No /.well-known/ discovery surface is published on any Splitgate or 1047 Games
+  host. www.splitgate.com and splitgate2.com are a Nuxt single-page app that
+  answers every unknown path with an HTTP 404 carrying the same 113,456-byte HTML
+  shell; 1047games.com is a Next.js app doing the same with a 33,027-byte shell.
+  The documented API host, api.1047games.com, could not be probed at all — see
+  hosts[] below.
+hosts:
+- host: www.splitgate.com
+  reachable: true
+- host: splitgate2.com
+  reachable: true
+- host: 1047games.com
+  reachable: true
+- host: api.1047games.com
+  reachable: false
+  note: >-
+    DNS resolves api.1047games.com to CNAME
+    api-third-party-prod.maverick-global.prod.1047games.com, which returns
+    NXDOMAIN — a dangling CNAME. The production endpoint declared in the
+    provider's own OpenAPI servers[] did not resolve on the probe date.
+documents:
+- path: /.well-known/security.txt
+  host: www.splitgate.com
+  status: 404
+- path: /.well-known/openid-configuration
+  host: www.splitgate.com
+  status: 404
+- path: /.well-known/oauth-authorization-server
+  host: www.splitgate.com
+  status: 404
+- path: /.well-known/api-catalog
+  host: www.splitgate.com
+  status: 404
+- path: /.well-known/ai-plugin.json
+  host: www.splitgate.com
+  status: 404
+- path: /.well-known/agent-card.json
+  host: www.splitgate.com
+  status: 404
+- path: /.well-known/agent.json
+  host: www.splitgate.com
+  status: 404
+- path: /.well-known/security.txt
+  host: 1047games.com
+  status: 404
+- path: /.well-known/openid-configuration
+  host: 1047games.com
+  status: 404
+- path: /.well-known/oauth-authorization-server
+  host: 1047games.com
+  status: 404
+- path: /.well-known/api-catalog
+  host: 1047games.com
+  status: 404
+- path: /.well-known/ai-plugin.json
+  host: 1047games.com
+  status: 404
+- path: /.well-known/agent-card.json
+  host: 1047games.com
+  status: 404
+- path: /.well-known/agent.json
+  host: 1047games.com
+  status: 404
+- path: /.well-known/agent-card.json
+  host: api.1047games.com
+  status: null
+  error: dns-nxdomain
+- path: /.well-known/agent.json
+  host: api.1047games.com
+  status: null
+  error: dns-nxdomain
+- path: /.well-known/oauth-authorization-server
+  host: api.1047games.com
+  status: null
+  error: dns-nxdomain
+- path: /.well-known/openid-configuration
+  host: api.1047games.com
+  status: null
+  error: dns-nxdomain
+security_txt: none
+a2a_agent_card: none

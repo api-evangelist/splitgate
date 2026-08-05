@@ -1,0 +1,51 @@
+generated: '2026-08-05'
+method: derived
+status: candidate
+source: openapi/splitgate-third-party-openapi-original.yml
+notes: >-
+  1047 Games publishes NO MCP server. Searched the sdk-api repository and the rest
+  of the 1047Games GitHub organization, splitgate.com, 1047games.com, npm
+  (@modelcontextprotocol and 1047/splitgate names) and the public MCP registries —
+  no result. The tools below are a CANDIDATE surface derived mechanically from the
+  five published OpenAPI operations, one tool per operationId. Each tool's real
+  input contract is that operation's parameters in the spec. This is a design
+  proposal, not a 1047 Games claim.
+server:
+  name: splitgate
+  transport: http
+  url: null
+auth:
+  inherits: bearer JWT (Authorization header), per the OpenAPI securityScheme bearerToken
+  see: authentication/splitgate-authentication.yml
+tools:
+- name: search_players
+  description: Search Splitgate players by display name or exact player id and return
+    matching player ids. Cursor-paginated.
+  source_operation: openapi/splitgate-third-party-openapi-original.yml#searchPlayers
+  inputs: [term (required), limit, anchor]
+- name: get_player_stats
+  description: Get a player's summary statistics — matches played, wins, losses, kills,
+    deaths, assists, damage, score, XP — scoped by career, season, game mode or match.
+  source_operation: openapi/splitgate-third-party-openapi-original.yml#getPlayerStats
+  inputs: [playerId (required)]
+- name: get_player_ranks
+  description: Get a player's current competitive ranks, one row per ranked match
+    type, with absolute or divisional placement.
+  source_operation: openapi/splitgate-third-party-openapi-original.yml#getPlayerRanks
+  inputs: [playerId (required)]
+- name: get_player_matches
+  description: Page through a player's match history with per-match stats and participation
+    window.
+  source_operation: openapi/splitgate-third-party-openapi-original.yml#getPlayerMatches
+  inputs: [playerId (required), limit, anchor]
+- name: get_match_details
+  description: Get one match's full detail — status, map, game mode, playlist, timings,
+    and every team with its members and their stats.
+  source_operation: openapi/splitgate-third-party-openapi-original.yml#getMatchDetails
+  inputs: [matchId (required)]
+constraints:
+- All five tools are read-only; there is no write surface to expose.
+- >-
+  A working server cannot be stood up today: the declared upstream host
+  api.1047games.com did not resolve on 2026-08-05 (dangling CNAME), and the
+  contract documents no way to obtain the required bearer JWT.

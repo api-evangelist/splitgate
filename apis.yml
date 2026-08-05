@@ -1,18 +1,81 @@
 aid: splitgate
 name: Splitgate
-description: 'Splitgate is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'Splitgate is the free-to-play sci-fi arena first-person shooter franchise
+  built by 1047 Games, the Stanford-founded studio behind the portal-plus-FPS formula
+  that shipped as Splitgate (2019), Splitgate 2 (June 2025) and, after a full rebuild,
+  SPLITGATE: Arena Reloaded (December 2025). Beyond the game itself, 1047 Games publishes
+  a small public Third-Party API — an OpenAPI 3.0.1 contract served from the studio''s
+  own GitHub organization with a Swagger UI reference — exposing player search, career
+  and per-mode statistics, competitive ranks, match history and full match details
+  so community stat trackers, esports tooling and leaderboard sites can build against
+  real game data.'
+image: https://lp-cms-prod.images.maverick-rooster.prod.1047games.com/tiny_Rooster_Social_Discord_Banner_960x540_2a5d61e42b.png
 url: https://raw.githubusercontent.com/api-evangelist/splitgate/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-05'
 modified: '2026-08-05'
 tags:
 - Company
-apis: []
+- Gaming
+- Video Games
+- Esports
+- Player Statistics
+- Leaderboards
+- Match Data
+- Entertainment
+apis:
+- aid: splitgate:third-party-api
+  name: 1047 Games Third-Party API
+  description: 'Public read-only HTTP API from 1047 Games for retrieving player statistics,
+    player ranks, match history and match details for Splitgate. Five GET operations
+    over a bearer-JWT-secured surface: search players by display name, fetch a player''s
+    summary statistics, fetch current competitive ranks, page through match history,
+    and read a single match''s full team and player breakdown. Cursor pagination uses
+    an opaque page anchor; errors follow a reason/message/domain/metadata envelope
+    with a discriminated gRPC-style status detail.'
+  humanURL: https://1047games.github.io/sdk-api/
+  baseURL: https://api.1047games.com
+  tags:
+  - Players
+  - Matches
+  - Statistics
+  - Ranks
+  - Gaming
+  properties:
+  - type: OpenAPI
+    url: openapi/splitgate-third-party-openapi-original.yml
+  - type: Overlay
+    url: overlays/splitgate-third-party-overlay.yaml
+  - type: Authentication
+    url: authentication/splitgate-authentication.yml
+  - type: ErrorCatalog
+    url: errors/splitgate-problem-types.yml
+  - type: Conventions
+    url: conventions/splitgate-conventions.yml
+  - type: DataModel
+    url: data-model/splitgate-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/splitgate-lifecycle.yml
+  - type: Conformance
+    url: conformance/splitgate-conformance.yml
+  - type: ChangeLog
+    url: changelog/splitgate-changelog.yml
+  - type: RateLimits
+    url: rate-limits/splitgate-rate-limits.yml
+  - type: MCPServer
+    url: mcp/splitgate-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/splitgate-tool-crosswalk.yml
+  - type: AgenticAccess
+    url: agentic-access/splitgate-agentic-access.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: APIReference
+    url: https://1047games.github.io/sdk-api/
+  - type: SourceCode
+    url: https://github.com/1047Games/sdk-api
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +83,47 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
+  url: https://www.splitgate.com/
+- type: CompanyWebsite
+  url: https://1047games.com/
+- type: APIReference
+  url: https://1047games.github.io/sdk-api/
+- type: GitHubOrganization
+  url: https://github.com/1047Games
+- type: Support
+  url: https://support.splitgate.com/hc
+- type: Blog
+  url: https://www.splitgate.com/news
+- type: TermsOfService
+  url: https://www.splitgate.com/tos-eula
+- type: PrivacyPolicy
+  url: https://www.splitgate.com/privacy-policy
+- type: CodeOfConduct
+  url: https://www.splitgate.com/code-of-conduct
+- type: Community
+  url: https://discord.com/invite/splitgate
+- type: Packages
+  url: packages/splitgate-packages.yml
+- type: WellKnown
+  url: well-known/splitgate-well-known.yml
+- type: DomainSecurity
+  url: security/splitgate-domain-security.yml
+- type: LLMsTxt
+  url: llms/splitgate-llms.txt
+- type: Twitter
+  url: https://twitter.com/splitgate
+- type: YouTube
+  url: https://www.youtube.com/channel/UCdUA8I1gJ606kBa9MfTZIyw
+- type: Twitch
+  url: https://www.twitch.tv/splitgate
+- type: Instagram
+  url: https://www.instagram.com/splitgate/
+- type: Facebook
+  url: https://www.facebook.com/Splitgate/
+- type: Forge
   url: https://forgeglobal.com/splitgate_stock/
+x-enrichment:
+  date: '2026-08-05'
+  status: enriched
+  artifacts_added: 20
+  pass: local-v1

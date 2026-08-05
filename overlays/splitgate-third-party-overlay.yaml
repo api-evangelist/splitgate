@@ -1,0 +1,61 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the 1047 Games Third-Party API
+  version: 1.0.0
+extends: openapi/splitgate-third-party-openapi-original.yml
+x-generated: '2026-08-05'
+x-method: generated
+x-source: openapi/splitgate-third-party-openapi-original.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-profile: https://apis.io/provider/splitgate/
+    x-apievangelist-reviewed: '2026-08-05'
+    x-provider: 1047 Games
+    x-api-reference: https://1047games.github.io/sdk-api/
+    x-spec-source: https://github.com/1047Games/sdk-api/blob/master/openapi.yaml
+    contact:
+      name: 1047 Games
+      url: https://github.com/1047Games/sdk-api/issues
+- target: $.servers[0]
+  update:
+    x-resolves: false
+    x-probed: '2026-08-05'
+    x-probe-note: >-
+      api.1047games.com is a CNAME to
+      api-third-party-prod.maverick-global.prod.1047games.com, which returned
+      NXDOMAIN on the probe date. The declared production endpoint did not
+      resolve.
+- target: $
+  update:
+    tags:
+    - name: Players
+      description: Player search, statistics and competitive ranks.
+    - name: Matches
+      description: Match history and full match detail.
+- target: $.components.securitySchemes.bearerToken
+  update:
+    x-token-acquisition: undocumented
+    x-note: The contract requires a bearer JWT but publishes no issuance, registration
+      or OAuth flow for obtaining one.
+- target: $.paths['/v1/search/players'].get
+  update:
+    x-pagination:
+      style: cursor
+      request: {limit: limit, cursor: anchor}
+      response: {items: items, cursor: nextPageAnchor, total: totalItemCount}
+    x-agentic-access:
+      action-class: connected
+      consequence: read
+- target: $.paths['/v1/game/splitgate2/players/{playerId}/matches'].get
+  update:
+    x-pagination:
+      style: cursor
+      request: {limit: limit, cursor: anchor}
+      response: {items: items, cursor: nextPageAnchor, total: totalItemCount}
+- target: $.components.schemas.ErrorResponse
+  update:
+    x-error-model: google-rpc-status
+    x-not-rfc9457: true
+    x-note: Custom reason/message/domain/metadata envelope with a discriminated gRPC
+      status detail — not application/problem+json.
