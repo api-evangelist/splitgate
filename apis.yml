@@ -26,28 +26,16 @@ tags:
 - Match Data
 - Entertainment
 apis:
-- aid: splitgate:third-party-api
-  name: 1047 Games Third-Party API
-  description: 'Public read-only HTTP API from 1047 Games for retrieving player statistics,
-    player ranks, match history and match details for Splitgate. Five GET operations
-    over a bearer-JWT-secured surface: search players by display name, fetch a player''s
-    summary statistics, fetch current competitive ranks, page through match history,
-    and read a single match''s full team and player breakdown. Cursor pagination uses
-    an opaque page anchor; errors follow a reason/message/domain/metadata envelope
-    with a discriminated gRPC-style status detail.'
+- aid: splitgate:splitgate-matches-api
+  name: Splitgate Matches API
+  description: The Matches API from Splitgate — 1 operation(s) for matches.
   humanURL: https://1047games.github.io/sdk-api/
   baseURL: https://api.1047games.com
   tags:
-  - Players
   - Matches
-  - Statistics
-  - Ranks
-  - Gaming
   properties:
   - type: OpenAPI
-    url: openapi/splitgate-third-party-openapi-original.yml
-  - type: Overlay
-    url: overlays/splitgate-third-party-overlay.yaml
+    url: openapi/splitgate-matches-api-openapi.yml
   - type: Authentication
     url: authentication/splitgate-authentication.yml
   - type: ErrorCatalog
@@ -70,8 +58,40 @@ apis:
     url: mcp/splitgate-tool-crosswalk.yml
   - type: AgenticAccess
     url: agentic-access/splitgate-agentic-access.yml
-  - type: AgentSkill
-    url: skills/_index.yml
+  - type: APIReference
+    url: https://1047games.github.io/sdk-api/
+  - type: SourceCode
+    url: https://github.com/1047Games/sdk-api
+- aid: splitgate:splitgate-players-api
+  name: Splitgate Players API
+  description: The Players API from Splitgate — 4 operation(s) for players.
+  humanURL: https://1047games.github.io/sdk-api/
+  baseURL: https://api.1047games.com
+  tags:
+  - Players
+  properties:
+  - type: OpenAPI
+    url: openapi/splitgate-players-api-openapi.yml
+  - type: Authentication
+    url: authentication/splitgate-authentication.yml
+  - type: ErrorCatalog
+    url: errors/splitgate-problem-types.yml
+  - type: Conventions
+    url: conventions/splitgate-conventions.yml
+  - type: DataModel
+    url: data-model/splitgate-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/splitgate-lifecycle.yml
+  - type: Conformance
+    url: conformance/splitgate-conformance.yml
+  - type: ChangeLog
+    url: changelog/splitgate-changelog.yml
+  - type: RateLimits
+    url: rate-limits/splitgate-rate-limits.yml
+  - type: ToolCrosswalk
+    url: mcp/splitgate-tool-crosswalk.yml
+  - type: AgenticAccess
+    url: agentic-access/splitgate-agentic-access.yml
   - type: APIReference
     url: https://1047games.github.io/sdk-api/
   - type: SourceCode
@@ -82,6 +102,10 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: AgentSkill
+  url: skills/splitgate-match-history.md
+- type: Overlay
+  url: overlays/splitgate-third-party-overlay.yaml
 - type: Website
   url: https://www.splitgate.com/
 - type: CompanyWebsite
