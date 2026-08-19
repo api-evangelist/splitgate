@@ -13,7 +13,7 @@ image: https://lp-cms-prod.images.maverick-rooster.prod.1047games.com/tiny_Roost
 url: https://raw.githubusercontent.com/api-evangelist/splitgate/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 created: '2026-08-05'
 modified: '2026-08-05'
 tags:
