@@ -1,0 +1,20 @@
+{
+  "provider": "splitgate",
+  "sources": [
+    "splitgate-matches-api-openapi.yml",
+    "splitgate-players-api-openapi.yml"
+  ],
+  "outputs": [
+    "splitgate-matches-api-openapi.yml",
+    "splitgate-players-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "splitgate-matches-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "splitgate-players-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": []
+}

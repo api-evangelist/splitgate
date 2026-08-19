@@ -1,0 +1,1367 @@
+openapi: 3.2.0
+info:
+  title: 1047 Games Third-Party Players API
+  version: 1.0.0
+  description: 'API for retrieving player statistics, player ranks, match history, and
+
+    match details from 1047 Games.'
+servers:
+- url: https://api.1047games.com
+  description: 1047 Games public API endpoint
+security:
+- bearerToken: []
+tags:
+- name: Players
+paths:
+  /v1/search/players:
+    get:
+      summary: Search for players
+      operationId: searchPlayers
+      tags:
+      - Players
+      description: 'Search for players and get their player IDs.
+
+        The search is case-insensitive and will return players that
+
+        match the query.
+
+        The search will return a number of results less than or equal
+
+        to the provided limit (default 25).
+
+        The response includes a page anchor that can be used to retrieve
+
+        the next page of results.'
+      parameters:
+      - name: term
+        in: query
+        required: true
+        schema:
+          type: string
+        description: 'The search term to use for the player search.
+
+          The currently supported search terms are player display
+
+          name and player id equality.
+
+          The search term is case-insensitive and will return players
+
+          that match the query.
+
+          Results are returned in order of relevance to the search term.'
+        example: TheRizzler
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 25
+          minimum: 1
+          maximum: 100
+        description: 'Maximum number of results to return.
+
+          The maximum number of results that can be returned is 100.
+
+          If no limit is provided, the default limit of 25 will be used.'
+        example: 10
+      - name: anchor
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 'Opaque page anchor provided by the previous response in order to
+
+          paginate results.
+
+          Page anchors are only valid in the context of a single query.
+
+          They should not be persisted or used across multiple queries.'
+        example: abc123=
+      responses:
+        '200':
+          description: Successful search results
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                - totalItemCount
+                properties:
+                  items:
+                    type: array
+                    description: 'A list of player search results.
+
+                      The list is sorted by relevance to the search term.
+
+                      The list is limited to the number of results specified by the limit parameter.
+
+                      If there are no matches for the search term, the list will be empty.'
+                    items:
+                      $ref: '#/components/schemas/PlayerSearchResult'
+                  nextPageAnchor:
+                    type: string
+                    description: 'Opaque page anchor that can be used to retrieve the next page
+
+                      of results.
+
+                      Page anchors are only valid in the context of a single query.
+
+                      They should not be persisted or used across multiple queries.'
+                    example: abc123=
+                  totalItemCount:
+                    type: integer
+                    description: Total number of items that match the search query
+                    example: 3
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: INVALID_REQUEST
+                message: The request is invalid.
+                domain: Players
+                error:
+                  status: InvalidArgument
+                  violations:
+                  - field: limit
+                    reason: INVALID_VALUE
+                    message: The limit must be between 1 and 100, inclusive.
+                  - field: term
+                    reason: INVALID_VALUE
+                    message: The search term must be between 3 and 100 characters in length.
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: UNAUTHENTICATED
+                message: The request could not be authenticated.
+                domain: Players
+                error:
+                  status: Unauthenticated
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: PERMISSION_DENIED
+                message: The client does not have permission to access this resource.
+                domain: Players
+                error:
+                  status: PermissionDenied
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: UNEXPECTED_ERROR
+                message: An unexpected error occurred.
+                domain: Players
+                error:
+                  status: Internal
+  /v1/game/splitgate2/players/{playerId}/stats:
+    get:
+      summary: Get player statistics
+      operationId: getPlayerStats
+      tags:
+      - Players
+      description: 'Retrieve comprehensive statistics for a player.
+
+        The stats are provided aggregated over all game modes, and split
+
+        by game mode.
+
+        Game modes are the top-level categories of gameplay at 1047Games,
+
+        i.e. Ranked Arena, Unranked Arena, and Custom.
+
+
+        Querying stats for a player by season is not yet supported, but
+
+        will be added in the future in a non-breaking fashion.
+
+
+        Summing stats over specific game variant or weapon is not yet
+
+        supported.'
+      parameters:
+      - name: playerId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Player ID
+        example: 09b74ba4-408f-4121-bf50-7edf11332a65
+      responses:
+        '200':
+          description: Player career statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SummaryPlayerStats'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: INVALID_REQUEST
+                message: The request is invalid.
+                domain: Players
+                error:
+                  status: InvalidArgument
+                  violations:
+                  - field: playerId
+                    reason: MISSING_REQUIRED
+                    message: The playerId parameter cannot be empty.
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: UNAUTHENTICATED
+                message: The request could not be authenticated.
+                domain: Players
+                error:
+                  status: Unauthenticated
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: PERMISSION_DENIED
+                message: The client does not have permission to access this resource.
+                domain: Players
+                error:
+                  status: PermissionDenied
+        '404':
+          description: Player Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: PLAYER_NOT_FOUND
+                message: No player found for the given player ID.
+                domain: Players
+                error:
+                  status: NotFound
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: UNEXPECTED_ERROR
+                message: An unexpected error occurred.
+                domain: Players
+                error:
+                  status: Internal
+  /v1/game/splitgate2/players/{playerId}/ranks:
+    get:
+      summary: Get current player ranks
+      operationId: getPlayerRanks
+      tags:
+      - Players
+      description: Retrieve current ranks for a player
+      parameters:
+      - name: playerId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Player ID
+        example: 09b74ba4-408f-4121-bf50-7edf11332a65
+      responses:
+        '200':
+          description: Player rank
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PlayerRank'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: INVALID_REQUEST
+                message: The request is invalid.
+                domain: Players
+                error:
+                  status: InvalidArgument
+                  violations:
+                  - field: playerId
+                    reason: MISSING_REQUIRED
+                    message: The playerId parameter cannot be empty.
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: UNAUTHENTICATED
+                message: The request could not be authenticated.
+                domain: Players
+                error:
+                  status: Unauthenticated
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: PERMISSION_DENIED
+                message: The client does not have permission to access this resource.
+                domain: Players
+                error:
+                  status: PermissionDenied
+        '404':
+          description: Player Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: PLAYER_NOT_FOUND
+                message: No player found for the given player ID.
+                domain: Players
+                error:
+                  status: NotFound
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: UNEXPECTED_ERROR
+                message: An unexpected error occurred.
+                domain: Players
+                error:
+                  status: Internal
+  /v1/game/splitgate2/players/{playerId}/matches:
+    get:
+      summary: Get player match history
+      operationId: getPlayerMatches
+      tags:
+      - Players
+      description: 'Retrieve match history for a player.
+
+        The match history is returned in reverse chronological order,
+
+        with the most recent matches first.
+
+        The query will return a number of results less than or equal to the
+
+        provided limit (default 25).
+
+        The response includes a page anchor that can be used to retrieve the
+
+        next page of matches.'
+      parameters:
+      - name: playerId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Player ID
+        example: 09b74ba4-408f-4121-bf50-7edf11332a65
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 25
+          minimum: 1
+          maximum: 100
+        description: 'Maximum number of matches to return.
+
+          The maximum number of matches that can be returned is 100.
+
+          If no limit is provided, the default limit of 25 will be used.'
+        example: 10
+      - name: anchor
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 'Opaque page anchor provided by the previous response in order to
+
+          paginate results.
+
+          Page anchors are only valid in the context of a single query.
+
+          They should not be persisted or used across multiple queries.'
+        example: abc123=
+      responses:
+        '200':
+          description: Player match history
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                - totalItemCount
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PlayerMatch'
+                  nextPageAnchor:
+                    type: string
+                    description: 'Opaque page anchor that can be used to retrieve the next page
+
+                      of results.
+
+                      Page anchors are only valid in the context of a single query.
+
+                      They should not be persisted or used across multiple queries.'
+                    example: abc123=
+                  totalItemCount:
+                    type: integer
+                    description: Total number of matches in the player's match history
+                    example: 3
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: INVALID_REQUEST
+                message: The request is invalid.
+                domain: Players
+                error:
+                  status: InvalidArgument
+                  violations:
+                  - field: playerId
+                    reason: MISSING_REQUIRED
+                    message: The playerId parameter cannot be empty.
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: UNAUTHENTICATED
+                message: The request could not be authenticated.
+                domain: Players
+                error:
+                  status: Unauthenticated
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: PERMISSION_DENIED
+                message: The client does not have permission to access this resource.
+                domain: Players
+                error:
+                  status: PermissionDenied
+        '404':
+          description: Player Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: PLAYER_NOT_FOUND
+                message: No player found for the given player ID.
+                domain: Players
+                error:
+                  status: NotFound
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                reason: UNEXPECTED_ERROR
+                message: An unexpected error occurred.
+                domain: Players
+                error:
+                  status: Internal
+components:
+  schemas:
+    StatsSummedOver:
+      oneOf:
+      - $ref: '#/components/schemas/StatsSummedOverCareer'
+      - $ref: '#/components/schemas/StatsSummedOverMatch'
+      - $ref: '#/components/schemas/StatsSummedOverSeason'
+      - $ref: '#/components/schemas/StatsSummedOverGameMode'
+      discriminator:
+        propertyName: type
+        mapping:
+          Career: '#/components/schemas/StatsSummedOverCareer'
+          Match: '#/components/schemas/StatsSummedOverMatch'
+          Season: '#/components/schemas/StatsSummedOverSeason'
+          GameMode: '#/components/schemas/StatsSummedOverGameMode'
+      example:
+        type: Career
+    PermissionDenied:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - PermissionDenied
+          example: PermissionDenied
+    ResourceExhausted:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - ResourceExhausted
+          example: ResourceExhausted
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuotaViolation'
+    PlayerRankPlacement:
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/AbsolutePlayerRankPlacement'
+      - $ref: '#/components/schemas/DivisionalPlayerRankPlacement'
+    StatsSummedOverSeason:
+      type: object
+      required:
+      - type
+      - seasonSlug
+      properties:
+        type:
+          type: string
+          enum:
+          - Season
+          example: Season
+        seasonSlug:
+          type: string
+          description: The human-readable identifer for the season
+          example: season_0
+    Unavailable:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - Unavailable
+          example: Unavailable
+    FailedPrecondition:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - FailedPrecondition
+          example: FailedPrecondition
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/PreconditionViolation'
+    RequestViolation:
+      type: object
+      required:
+      - field
+      - description
+      - reason
+      properties:
+        field:
+          type: string
+          description: The path to the field that caused the error
+          example: playerId
+        description:
+          type: string
+          description: Description of why the field is invalid
+          example: The player ID must not be empty.
+        reason:
+          type: string
+          description: The reason code for the violation
+          example: MISSING_REQUIRED
+    Aborted:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - Aborted
+          example: Aborted
+    StatsSummedOverGameMode:
+      type: object
+      required:
+      - type
+      - matchTypeSlug
+      properties:
+        type:
+          type: string
+          enum:
+          - MatchType
+          example: MatchType
+        matchTypeSlug:
+          type: string
+          description: The human-readable identifer for the match type
+          example: arenaranked
+    PlayerMatch:
+      type: object
+      required:
+      - matchId
+      - joinedAt
+      - leftAt
+      - playlistSlug
+      - mapSlug
+      - platform
+      properties:
+        matchId:
+          type: string
+          description: Unique identifier for the match
+          example: 2443ceef-3e4c-45a3-8d18-ff87e22c7cb6
+        joinedAt:
+          type: string
+          format: date-time
+          description: 'The timestamp at which the player joined the match in UTC timezone
+
+            formatted as an ISO 8601 string.'
+          example: '2024-01-01T00:00:00Z'
+        leftAt:
+          type: string
+          format: date-time
+          description: 'The timestamp at which the player left the match in UTC timezone
+
+            formatted as an ISO 8601 string.'
+          example: '2024-01-01T00:00:00Z'
+        playlistSlug:
+          type: string
+          description: 'Human readable identifier for the playlist that the match was played from.
+
+            The playlist is the experience that the players queue for.
+
+            Playlist is only present for matches that are played from the matchmaking queue.'
+          example: arena_unranked_quickplay
+        mapSlug:
+          type: string
+          description: Human readable identifier for the map that the match was played on.
+          example: academy
+        platform:
+          type: string
+          description: Platform that the player was playing on
+          example: Steam
+        stats:
+          $ref: '#/components/schemas/SummaryPlayerStats'
+    SummaryPlayerStats:
+      type: object
+      required:
+      - summedOver
+      - updatedAt
+      properties:
+        summedOver:
+          $ref: '#/components/schemas/StatsSummedOver'
+        updatedAt:
+          type: string
+          format: date-time
+          description: 'The timestamp at which the stats were last updated in UTC timezone
+
+            formatted as an ISO 8601 string.'
+          example: '2024-01-01T00:10:00Z'
+        matchesPlayed:
+          type: integer
+          description: Total number of matches played
+          example: 100
+          minimum: 0
+        wins:
+          type: integer
+          description: Total number of wins
+          example: 50
+          minimum: 0
+        losses:
+          type: integer
+          description: Total number of losses
+          example: 50
+          minimum: 0
+        kills:
+          type: integer
+          description: Total number of kills
+          example: 1000
+          minimum: 0
+        deaths:
+          type: integer
+          description: Total number of deaths
+          example: 1000
+          minimum: 0
+        suicides:
+          type: integer
+          description: Total number of suicides
+          example: 1000
+          minimum: 0
+        assists:
+          type: integer
+          description: Total number of assists
+          example: 1000
+          minimum: 0
+        damage:
+          type: number
+          description: Total amount of damage dealt
+          example: 100000.7
+          minimum: 0
+        score:
+          type: integer
+          description: Total score achieved
+          example: 50000
+          minimum: 0
+        xp:
+          type: integer
+          description: Total experience points earned
+          example: 25000
+          minimum: 0
+        roundWins:
+          type: integer
+          description: Total number of rounds won
+          example: 200
+          minimum: 0
+        killsAndAssists:
+          type: integer
+          description: Total number of kills and assists combined
+          example: 2000
+          minimum: 0
+        matchWins:
+          type: integer
+          description: Total number of match wins
+          example: 45
+          minimum: 0
+        itemsPickedUp:
+          type: integer
+          description: Total number of items picked up
+          example: 500
+          minimum: 0
+        hits:
+          type: integer
+          description: Total number of hits
+          example: 5000
+          minimum: 0
+        shotsFired:
+          type: integer
+          description: Total number of shots fired
+          example: 8000
+          minimum: 0
+        precisionHits:
+          type: integer
+          description: Total number of precision hits
+          example: 1500
+          minimum: 0
+        reloads:
+          type: integer
+          description: Total number of reloads
+          example: 800
+          minimum: 0
+        medalBackPain:
+          type: integer
+          description: Number of Back Pain medals earned for low health kills
+          example: 5
+          minimum: 0
+        medalPhantomMenace:
+          type: integer
+          description: Number of Phantom Menace medals earned for getting a kill after you die
+          example: 3
+          minimum: 0
+        medalCloseCall:
+          type: integer
+          description: Number of Close Call medals earned for one-hit kills
+          example: 8
+          minimum: 0
+        medalAvengerKill:
+          type: integer
+          description: Number of Avenger Kill medals earned for killing an enemy who killed your teammate
+          example: 12
+          minimum: 0
+        medalRevengeKill:
+          type: integer
+          description: Number of Revenge Kill medals earned for killing an enemy who killed you
+          example: 7
+          minimum: 0
+        medalAssistKill:
+          type: integer
+          description: Number of Assist Kill medals earned for killing an enemy shortly after assisting
+          example: 25
+          minimum: 0
+        medalGuardianAngel:
+          type: integer
+          description: Number of Guardian Angel medals earned for killing an enemy while they attack a teammate
+          example: 4
+          minimum: 0
+        medalPortalFlankKill:
+          type: integer
+          description: Number of Portal Flank Kill medals earned for kills using portal flanking tactics
+          example: 6
+          minimum: 0
+        medalComebackKill:
+          type: integer
+          description: Number of Comeback Kill medals earned for kills during comeback situations
+          example: 9
+          minimum: 0
+        precisionKills:
+          type: integer
+          description: Total number of precision kills including headshots and critical hits
+          example: 150
+          minimum: 0
+        medalShowstopper:
+          type: integer
+          description: Number of Showstopper medals earned for killing the top player on the enemy team
+          example: 2
+          minimum: 0
+        medalSuicideKill:
+          type: integer
+          description: Number of Suicide Kill medals earned for killing yourself and an enemy simultaneously
+          example: 1
+          minimum: 0
+        medalFromDownTown:
+          type: integer
+          description: Number of From Down Town medals earned for long-distance kills
+          example: 10
+          minimum: 0
+        medalFinalStand:
+          type: integer
+          description: Number of Final Stand medals earned for getting a kill while being the last player standing
+          example: 3
+          minimum: 0
+        capturePointCaptures:
+          type: integer
+          description: Total number of capture point captures completed
+          example: 75
+          minimum: 0
+        medalCapturePointKill:
+          type: integer
+          description: Number of Capture Point Kill medals earned for kills while capturing or defending points
+          example: 15
+          minimum: 0
+        medalCapturePointWipe:
+          type: integer
+          description: Number of Capture Point Wipe medals earned for clearing all enemies from a capture point
+          example: 2
+          minimum: 0
+        multikill2:
+          type: integer
+          description: Number of 2 kills in quick succession
+          example: 50
+          minimum: 0
+        multikill3:
+          type: integer
+          description: Number of 3 kills in quick succession
+          example: 20
+          minimum: 0
+        multikill4:
+          type: integer
+          description: Number of 4 kills in quick succession
+          example: 8
+          minimum: 0
+        multikill5:
+          type: integer
+          description: Number of 5 kills in quick succession
+          example: 3
+          minimum: 0
+        multikill6:
+          type: integer
+          description: Number of 6 kills in quick succession
+          example: 1
+          minimum: 0
+        multikill7:
+          type: integer
+          description: Number of 7 kills in quick succession
+          example: 0
+          minimum: 0
+        killstreak2:
+          type: integer
+          description: Number of 2 consecutive kills without dying
+          example: 40
+          minimum: 0
+        killstreak3:
+          type: integer
+          description: Number of 3 consecutive kills without dying
+          example: 25
+          minimum: 0
+        killstreak4:
+          type: integer
+          description: Number of 4 consecutive kills without dying
+          example: 15
+          minimum: 0
+        killstreak5:
+          type: integer
+          description: Number of 5 consecutive kills without dying
+          example: 10
+          minimum: 0
+        killstreak6:
+          type: integer
+          description: Number of 6 consecutive kills without dying
+          example: 6
+          minimum: 0
+        killstreak7:
+          type: integer
+          description: Number of 7 consecutive kills without dying
+          example: 4
+          minimum: 0
+        killstreak8:
+          type: integer
+          description: Number of 8 consecutive kills without dying
+          example: 2
+          minimum: 0
+        killstreak9:
+          type: integer
+          description: Number of 9 consecutive kills without dying
+          example: 1
+          minimum: 0
+        killstreak10:
+          type: integer
+          description: Number of 10 consecutive kills without dying
+          example: 1
+          minimum: 0
+        matchTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SummaryPlayerStats'
+        seasons:
+          type: array
+          items:
+            $ref: '#/components/schemas/SummaryPlayerStats'
+      example:
+        summedOver:
+          type: Career
+        updatedAt: '2024-01-01T00:10:00Z'
+        matchesPlayed: 100
+        wins: 50
+        losses: 50
+        kills: 1000
+        deaths: 1000
+        suicides: 100
+        assists: 1000
+        damage: 100000.7
+        score: 50000
+        xp: 25000
+        roundWins: 200
+        killsAndAssists: 2000
+        matchWins: 45
+        itemsPickedUp: 500
+        hits: 5000
+        shotsFired: 8000
+        precisionHits: 1500
+        precisionKills: 150
+        multikill2: 50
+        multikill3: 20
+        killstreak5: 10
+        capturePointCaptures: 75
+        matchTypes:
+        - summedOver:
+            type: MatchType
+            matchTypeSlug: arenaranked
+          updatedAt: '2024-01-01T00:10:00Z'
+          matchesPlayed: 15
+          wins: 10
+          losses: 5
+          kills: 100
+          deaths: 100
+          suicides: 10
+          assists: 100
+          damage: 1000.5
+          score: 5000
+          xp: 2500
+          roundWins: 30
+          multikill2: 8
+        - summedOver:
+            type: MatchType
+            matchTypeSlug: arenaunranked
+          updatedAt: '2023-12-31T23:50:00Z'
+          matchesPlayed: 100
+          wins: 50
+          losses: 50
+          kills: 900
+          deaths: 900
+          suicides: 90
+          assists: 900
+          damage: 9000.2
+          score: 45000
+          xp: 22500
+          roundWins: 170
+          multikill2: 42
+        seasons:
+        - summedOver:
+            type: Season
+            seasonSlug: season_1
+          updatedAt: '2024-01-01T00:10:00Z'
+          matchesPlayed: 15
+          wins: 10
+          losses: 5
+          kills: 100
+          deaths: 100
+          suicides: 10
+          assists: 100
+          damage: 1000.5
+          score: 5000
+          xp: 2500
+          roundWins: 30
+          multikill2: 8
+        - summedOver:
+            type: Season
+            seasonSlug: season_0
+          updatedAt: '2023-12-31T23:50:00Z'
+          matchesPlayed: 100
+          wins: 50
+          losses: 50
+          kills: 900
+          deaths: 900
+          suicides: 90
+          assists: 900
+          damage: 9000.2
+          score: 45000
+          xp: 22500
+          roundWins: 170
+          multikill2: 42
+    InvalidArgument:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - InvalidArgument
+          example: InvalidArgument
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestViolation'
+    ErrorResponse:
+      type: object
+      required:
+      - reason
+      - message
+      - domain
+      - metadata
+      - error
+      properties:
+        reason:
+          type: string
+          description: 'The reason code for the error.
+
+            The reason code is a short string that is used to identify the error.
+
+            The reason code is not localized and is intended for programmatic use.
+
+            It is recommended to use the reason code as a keyfor localization of
+
+            user-facing error messages, if needed.'
+          example: INVALID_REQUEST
+        message:
+          type: string
+          description: 'A high-level error message, in English.
+
+            The message is not localized and is intended for developer consumption.
+
+            It is recommended to use the reason code as a key for localization of
+
+            user-facing error messages, if needed.'
+          example: The request is invalid.
+        domain:
+          type: string
+          description: The logical domain from which the error originates
+          enum:
+          - Players
+          - Matches
+          example: Players
+        metadata:
+          type: object
+          description: 'Additional key-value pairs about the error, the request that caused the error,
+
+            or the state of the system at the time of the error.'
+          additionalProperties:
+            type: string
+          example:
+            playerId: 09b74ba4-408f-4121-bf50-7edf11332a65
+            matchId: 2443ceef-3e4c-45a3-8d18-ff87e22c7cb6
+        error:
+          $ref: '#/components/schemas/ErrorInfo'
+    StatsSummedOverCareer:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - Career
+          example: Career
+    PlayerSearchResult:
+      type: object
+      required:
+      - playerId
+      - displayName
+      properties:
+        playerId:
+          type: string
+          description: Unique identifier for the player
+          example: 09b74ba4-408f-4121-bf50-7edf11332a65
+        displayName:
+          type: string
+          description: Player's display name
+          example: TheRizzler
+    ErrorInfo:
+      oneOf:
+      - $ref: '#/components/schemas/InvalidArgument'
+      - $ref: '#/components/schemas/NotFound'
+      - $ref: '#/components/schemas/PermissionDenied'
+      - $ref: '#/components/schemas/Unauthenticated'
+      - $ref: '#/components/schemas/ResourceExhausted'
+      - $ref: '#/components/schemas/FailedPrecondition'
+      - $ref: '#/components/schemas/Aborted'
+      - $ref: '#/components/schemas/OutOfRange'
+      - $ref: '#/components/schemas/Unimplemented'
+      - $ref: '#/components/schemas/Internal'
+      - $ref: '#/components/schemas/Unavailable'
+      - $ref: '#/components/schemas/DataLoss'
+      discriminator:
+        propertyName: status
+        mapping:
+          InvalidArgument: '#/components/schemas/InvalidArgument'
+          NotFound: '#/components/schemas/NotFound'
+          PermissionDenied: '#/components/schemas/PermissionDenied'
+          Unauthenticated: '#/components/schemas/Unauthenticated'
+          ResourceExhausted: '#/components/schemas/ResourceExhausted'
+          FailedPrecondition: '#/components/schemas/FailedPrecondition'
+          Aborted: '#/components/schemas/Aborted'
+          OutOfRange: '#/components/schemas/OutOfRange'
+          Unimplemented: '#/components/schemas/Unimplemented'
+          Internal: '#/components/schemas/Internal'
+          Unavailable: '#/components/schemas/Unavailable'
+          DataLoss: '#/components/schemas/DataLoss'
+    QuotaViolation:
+      type: object
+      required:
+      - subject
+      - description
+      properties:
+        subject:
+          type: string
+          description: The subject of the quota violation
+          example: /v1/game/splitgate2/matches/{matchId}
+        description:
+          type: string
+          description: Description of the quota violation
+          example: The client has exceeded the maximum number of match detail requests per hour.
+    Unimplemented:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - Unimplemented
+          example: Unimplemented
+    DivisionalPlayerRankPlacement:
+      type: object
+      required:
+      - divisionPoints
+      - divisionPlacement
+      - maximumDivision
+      properties:
+        divisionPoints:
+          type: integer
+          description: 'The division points of the player within the division.
+
+            Once the player exceeds the point ceiling for the division,
+
+            they player will rank up to the next division.
+
+            Higher points indicate better performance.'
+          minimum: 0
+          maximum: 100
+          example: 0
+        divisionPointCeiling:
+          type: integer
+          description: 'The maximum points a player can have in a division.
+
+            Once the player exceeds this point ceiling, they will rank up to
+
+            the next division.
+
+            If absent, there is no point ceiling for the division.'
+          minimum: 0
+          example: 100
+        divisionPlacement:
+          type: integer
+          description: 'The 1-indexed division of the player within the rank (between 1
+
+            and maximumDivision).
+
+            The division is the rank of the player in the rank.
+
+            Higher division values indicate better performance.'
+          example: 1
+          minimum: 1
+        maximumDivision:
+          type: integer
+          description: 'The maximum division of the rank (i.e. the best division a
+
+            player can achieve in the rank.)'
+          example: 5
+          minimum: 1
+    NotFound:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - NotFound
+          example: NotFound
+    StatsSummedOverMatch:
+      type: object
+      required:
+      - type
+      - matchId
+      properties:
+        type:
+          type: string
+          enum:
+          - Match
+          example: Match
+        matchId:
+          type: string
+          description: The ID of the match
+          example: 2443ceef-3e4c-45a3-8d18-ff87e22c7cb6
+    PreconditionViolation:
+      type: object
+      required:
+      - type
+      - subject
+      - description
+      properties:
+        type:
+          type: string
+          description: The type of precondition violation
+          example: MATCH_NOT_FINISHED
+        subject:
+          type: string
+          description: The subject of the precondition violation
+          example: /v1/game/splitgate2/matches/2443ceef-3e4c-45a3-8d18-ff87e22c7cb6
+        description:
+          type: string
+          description: Description of the precondition violation
+          example: The match has not finished yet.
+    AbsolutePlayerRankPlacement:
+      type: object
+      required:
+      - absolutePoints
+      - absolutePlacement
+      - maximumPlacement
+      properties:
+        absolutePoints:
+          type: integer
+          description: 'The rank points of the player within the absolute rank.
+
+            There is no upper limit to the number of points a player can have in
+
+            an absolute placement rank.
+
+            Higher points indicate better performance.'
+          minimum: 0
+          example: 0
+        absolutePlacement:
+          type: integer
+          description: 'The 1-indexed placement of the player within the rank (between 1 and
+
+            maximumPlacement).
+
+            The placement is the rank of the player in the rank.
+
+            Lower placement values indicate better performance.'
+          minimum: 1
+          example: 1
+        maximumPlacement:
+          type: integer
+          description: 'The maximum placement of the rank (i.e. the worst placement a
+
+            player can achieve in the rank.)'
+          minimum: 1
+          example: 10
+    DataLoss:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - DataLoss
+          example: DataLoss
+    Unauthenticated:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - Unauthenticated
+          example: Unauthenticated
+    Internal:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - Internal
+          example: Internal
+    OutOfRange:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - OutOfRange
+          example: OutOfRange
+    PlayerRank:
+      type: object
+      required:
+      - matchTypeSlug
+      - rankSlug
+      - placement
+      - updatedAt
+      properties:
+        matchTypeSlug:
+          type: string
+          description: The human-readable identifer for the game mode
+          example: arenaranked
+        rankSlug:
+          type: string
+          description: The human-readable identifer for the rank
+          example: bronze
+        placement:
+          $ref: '#/components/schemas/PlayerRankPlacement'
+        updatedAt:
+          type: string
+          format: date-time
+          description: 'The timestamp at which the rank was last updated in UTC timezone
+
+            formatted as an ISO 8601 string.'
+          example: '2024-01-01T00:10:00Z'
+  securitySchemes:
+    bearerToken:
+      type: http
+      scheme: bearer
+      bearerFormat: jwt

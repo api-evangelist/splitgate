@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "1047 Games Third-Party Matches API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Matches",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get match details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.1047games.com/v1/game/splitgate2/matches/:matchId",
+            "params": [
+              {
+                "name": "matchId",
+                "value": "2443ceef-3e4c-45a3-8d18-ff87e22c7cb6",
+                "type": "path",
+                "description": "Match ID"
+              }
+            ]
+          },
+          "docs": "Retrieve detailed information about a specific match.\nThe match details include the match status, start and end times, map,\ngame mode, and team details, including placement and members display\nnames and stats for the match."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

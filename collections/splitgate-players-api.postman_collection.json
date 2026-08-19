@@ -1,0 +1,1606 @@
+{
+  "item": [
+    {
+      "id": "fe54c1aa-e5c4-4178-a814-30ffe03877e1",
+      "name": "Players",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7d40fe84-666c-4068-a906-528926c6db35",
+          "name": "Search for players",
+          "request": {
+            "name": "Search for players",
+            "description": {
+              "content": "Search for players and get their player IDs.\nThe search is case-insensitive and will return players that\nmatch the query.\nThe search will return a number of results less than or equal\nto the provided limit (default 25).\nThe response includes a page anchor that can be used to retrieve\nthe next page of results.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "search",
+                "players"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "term",
+                  "value": "<string>",
+                  "description": "(Required) The search term to use for the player search.\nThe currently supported search terms are player display\nname and player id equality.\nThe search term is case-insensitive and will return players\nthat match the query.\nResults are returned in order of relevance to the search term."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "25",
+                  "description": "Maximum number of results to return.\nThe maximum number of results that can be returned is 100.\nIf no limit is provided, the default limit of 25 will be used."
+                },
+                {
+                  "disabled": false,
+                  "key": "anchor",
+                  "value": "<string>",
+                  "description": "Opaque page anchor provided by the previous response in order to\npaginate results.\nPage anchors are only valid in the context of a single query.\nThey should not be persisted or used across multiple queries."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "82a078fb-6333-490a-924c-35987b0ca701",
+              "name": "Successful search results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "search",
+                    "players"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "term",
+                      "value": "TheRizzler"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "anchor",
+                      "value": "abc123="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"playerId\": \"09b74ba4-408f-4121-bf50-7edf11332a65\",\n      \"displayName\": \"TheRizzler\"\n    },\n    {\n      \"playerId\": \"09b74ba4-408f-4121-bf50-7edf11332a65\",\n      \"displayName\": \"TheRizzler\"\n    }\n  ],\n  \"totalItemCount\": 3,\n  \"nextPageAnchor\": \"abc123=\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cf6c41c6-c682-44f5-a4bf-95be1a873d7d",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "search",
+                    "players"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "term",
+                      "value": "TheRizzler"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "anchor",
+                      "value": "abc123="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"INVALID_REQUEST\",\n  \"message\": \"The request is invalid.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"InvalidArgument\",\n    \"violations\": [\n      {\n        \"field\": \"limit\",\n        \"reason\": \"INVALID_VALUE\",\n        \"message\": \"The limit must be between 1 and 100, inclusive.\"\n      },\n      {\n        \"field\": \"term\",\n        \"reason\": \"INVALID_VALUE\",\n        \"message\": \"The search term must be between 3 and 100 characters in length.\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e98403b2-e74f-48ac-9f5a-1b6d48d6747c",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "search",
+                    "players"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "term",
+                      "value": "TheRizzler"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "anchor",
+                      "value": "abc123="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"UNAUTHENTICATED\",\n  \"message\": \"The request could not be authenticated.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"Unauthenticated\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b8084645-96be-4ca5-b8d2-9bcbe56c48db",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "search",
+                    "players"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "term",
+                      "value": "TheRizzler"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "anchor",
+                      "value": "abc123="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"PERMISSION_DENIED\",\n  \"message\": \"The client does not have permission to access this resource.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"PermissionDenied\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "edfc40d8-8892-41ee-b172-d141838be0e8",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "search",
+                    "players"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "term",
+                      "value": "TheRizzler"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "anchor",
+                      "value": "abc123="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"UNEXPECTED_ERROR\",\n  \"message\": \"An unexpected error occurred.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"Internal\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "04eca24c-02ae-4223-910c-afa9bfd5780c",
+          "name": "Get player statistics",
+          "request": {
+            "name": "Get player statistics",
+            "description": {
+              "content": "Retrieve comprehensive statistics for a player.\nThe stats are provided aggregated over all game modes, and split\nby game mode.\nGame modes are the top-level categories of gameplay at 1047Games,\ni.e. Ranked Arena, Unranked Arena, and Custom.\n\nQuerying stats for a player by season is not yet supported, but\nwill be added in the future in a non-breaking fashion.\n\nSumming stats over specific game variant or weapon is not yet\nsupported.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "game",
+                "splitgate2",
+                "players",
+                ":playerId",
+                "stats"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "playerId",
+                  "description": "(Required) Player ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "51db47fb-8c59-4dc7-80ac-0accad31bfb5",
+              "name": "Player career statistics",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "stats"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"summedOver\": {\n    \"type\": \"Career\"\n  },\n  \"updatedAt\": \"2024-01-01T00:10:00Z\",\n  \"matchesPlayed\": 100,\n  \"wins\": 50,\n  \"losses\": 50,\n  \"kills\": 1000,\n  \"deaths\": 1000,\n  \"suicides\": 1000,\n  \"assists\": 1000,\n  \"damage\": 100000.7,\n  \"score\": 50000,\n  \"xp\": 25000,\n  \"roundWins\": 200,\n  \"killsAndAssists\": 2000,\n  \"matchWins\": 45,\n  \"itemsPickedUp\": 500,\n  \"hits\": 5000,\n  \"shotsFired\": 8000,\n  \"precisionHits\": 1500,\n  \"reloads\": 800,\n  \"medalBackPain\": 5,\n  \"medalPhantomMenace\": 3,\n  \"medalCloseCall\": 8,\n  \"medalAvengerKill\": 12,\n  \"medalRevengeKill\": 7,\n  \"medalAssistKill\": 25,\n  \"medalGuardianAngel\": 4,\n  \"medalPortalFlankKill\": 6,\n  \"medalComebackKill\": 9,\n  \"precisionKills\": 150,\n  \"medalShowstopper\": 2,\n  \"medalSuicideKill\": 1,\n  \"medalFromDownTown\": 10,\n  \"medalFinalStand\": 3,\n  \"capturePointCaptures\": 75,\n  \"medalCapturePointKill\": 15,\n  \"medalCapturePointWipe\": 2,\n  \"multikill2\": 50,\n  \"multikill3\": 20,\n  \"multikill4\": 8,\n  \"multikill5\": 3,\n  \"multikill6\": 1,\n  \"multikill7\": 0,\n  \"killstreak2\": 40,\n  \"killstreak3\": 25,\n  \"killstreak4\": 15,\n  \"killstreak5\": 10,\n  \"killstreak6\": 6,\n  \"killstreak7\": 4,\n  \"killstreak8\": 2,\n  \"killstreak9\": 1,\n  \"killstreak10\": 1,\n  \"matchTypes\": [\n    {\n      \"summedOver\": {\n        \"type\": \"Career\"\n      },\n      \"updatedAt\": \"2024-01-01T00:10:00Z\",\n      \"matchesPlayed\": 100,\n      \"wins\": 50,\n      \"losses\": 50,\n      \"kills\": 1000,\n      \"deaths\": 1000,\n      \"suicides\": 100,\n      \"assists\": 1000,\n      \"damage\": 100000.7,\n      \"score\": 50000,\n      \"xp\": 25000,\n      \"roundWins\": 200,\n      \"killsAndAssists\": 2000,\n      \"matchWins\": 45,\n      \"itemsPickedUp\": 500,\n      \"hits\": 5000,\n      \"shotsFired\": 8000,\n      \"precisionHits\": 1500,\n      \"precisionKills\": 150,\n      \"multikill2\": 50,\n      \"multikill3\": 20,\n      \"killstreak5\": 10,\n      \"capturePointCaptures\": 75,\n      \"matchTypes\": [\n        {\n          \"summedOver\": {\n            \"type\": \"MatchType\",\n            \"matchTypeSlug\": \"arenaranked\"\n          },\n          \"updatedAt\": \"2024-01-01T00:10:00Z\",\n          \"matchesPlayed\": 15,\n          \"wins\": 10,\n          \"losses\": 5,\n          \"kills\": 100,\n          \"deaths\": 100,\n          \"suicides\": 10,\n          \"assists\": 100,\n          \"damage\": 1000.5,\n          \"score\": 5000,\n          \"xp\": 2500,\n          \"roundWins\": 30,\n          \"multikill2\": 8\n        },\n        {\n          \"summedOver\": {\n            \"type\": \"MatchType\",\n            \"matchTypeSlug\": \"arenaunranked\"\n          },\n          \"updatedAt\": \"2023-12-31T23:50:00Z\",\n          \"matchesPlayed\": 100,\n          \"wins\": 50,\n          \"losses\": 50,\n          \"kills\": 900,\n          \"deaths\": 900,\n          \"suicides\": 90,\n          \"assists\": 900,\n          \"damage\": 9000.2,\n          \"score\": 45000,\n          \"xp\": 22500,\n          \"roundWins\": 170,\n          \"multikill2\": 42\n        }\n      ],\n      \"seasons\": [\n        {\n          \"summedOver\": {\n            \"type\": \"Season\",\n            \"seasonSlug\": \"season_1\"\n          },\n          \"updatedAt\": \"2024-01-01T00:10:00Z\",\n          \"matchesPlayed\": 15,\n          \"wins\": 10,\n          \"losses\": 5,\n          \"kills\": 100,\n          \"deaths\": 100,\n          \"suicides\": 10,\n          \"assists\": 100,\n          \"damage\": 1000.5,\n          \"score\": 5000,\n          \"xp\": 2500,\n          \"roundWins\": 30,\n          \"multikill2\": 8\n        },\n        {\n          \"summedOver\": {\n            \"type\": \"Season\",\n            \"seasonSlug\": \"season_0\"\n          },\n          \"updatedAt\": \"2023-12-31T23:50:00Z\",\n          \"matchesPlayed\": 100,\n          \"wins\": 50,\n          \"losses\": 50,\n          \"kills\": 900,\n          \"deaths\": 900,\n          \"suicides\": 90,\n          \"assists\": 900,\n          \"damage\": 9000.2,\n          \"score\": 45000,\n          \"xp\": 22500,\n          \"roundWins\": 170,\n          \"multikill2\": 42\n        }\n      ]\n    },\n    {\n      \"summedOver\": {\n        \"type\": \"Career\"\n      },\n      \"updatedAt\": \"2024-01-01T00:10:00Z\",\n      \"matchesPlayed\": 100,\n      \"wins\": 50,\n      \"losses\": 50,\n      \"kills\": 1000,\n      \"deaths\": 1000,\n      \"suicides\": 100,\n      \"assists\": 1000,\n      \"damage\": 100000.7,\n      \"score\": 50000,\n      \"xp\": 25000,\n      \"roundWins\": 200,\n      \"killsAndAssists\": 2000,\n      \"matchWins\": 45,\n      \"itemsPickedUp\": 500,\n      \"hits\": 5000,\n      \"shotsFired\": 8000,\n      \"precisionHits\": 1500,\n      \"precisionKills\": 150,\n      \"multikill2\": 50,\n      \"multikill3\": 20,\n      \"killstreak5\": 10,\n      \"capturePointCaptures\": 75,\n      \"matchTypes\": [\n        {\n          \"summedOver\": {\n            \"type\": \"MatchType\",\n            \"matchTypeSlug\": \"arenaranked\"\n          },\n          \"updatedAt\": \"2024-01-01T00:10:00Z\",\n          \"matchesPlayed\": 15,\n          \"wins\": 10,\n          \"losses\": 5,\n          \"kills\": 100,\n          \"deaths\": 100,\n          \"suicides\": 10,\n          \"assists\": 100,\n          \"damage\": 1000.5,\n          \"score\": 5000,\n          \"xp\": 2500,\n          \"roundWins\": 30,\n          \"multikill2\": 8\n        },\n        {\n          \"summedOver\": {\n            \"type\": \"MatchType\",\n            \"matchTypeSlug\": \"arenaunranked\"\n          },\n          \"updatedAt\": \"2023-12-31T23:50:00Z\",\n          \"matchesPlayed\": 100,\n          \"wins\": 50,\n          \"losses\": 50,\n          \"kills\": 900,\n          \"deaths\": 900,\n          \"suicides\": 90,\n          \"assists\": 900,\n          \"damage\": 9000.2,\n          \"score\": 45000,\n          \"xp\": 22500,\n          \"roundWins\": 170,\n          \"multikill2\": 42\n        }\n      ],\n      \"seasons\": [\n        {\n          \"summedOver\": {\n            \"type\": \"Season\",\n            \"seasonSlug\": \"season_1\"\n          },\n          \"updatedAt\": \"2024-01-01T00:10:00Z\",\n          \"matchesPlayed\": 15,\n          \"wins\": 10,\n          \"losses\": 5,\n          \"kills\": 100,\n          \"deaths\": 100,\n          \"suicides\": 10,\n          \"assists\": 100,\n          \"damage\": 1000.5,\n          \"score\": 5000,\n          \"xp\": 2500,\n          \"roundWins\": 30,\n          \"multikill2\": 8\n        },\n        {\n          \"summedOver\": {\n            \"type\": \"Season\",\n            \"seasonSlug\": \"season_0\"\n          },\n          \"updatedAt\": \"2023-12-31T23:50:00Z\",\n          \"matchesPlayed\": 100,\n          \"wins\": 50,\n          \"losses\": 50,\n          \"kills\": 900,\n          \"deaths\": 900,\n          \"suicides\": 90,\n          \"assists\": 900,\n          \"damage\": 9000.2,\n          \"score\": 45000,\n          \"xp\": 22500,\n          \"roundWins\": 170,\n          \"multikill2\": 42\n        }\n      ]\n    }\n  ],\n  \"seasons\": [\n    {\n      \"summedOver\": {\n        \"type\": \"Career\"\n      },\n      \"updatedAt\": \"2024-01-01T00:10:00Z\",\n      \"matchesPlayed\": 100,\n      \"wins\": 50,\n      \"losses\": 50,\n      \"kills\": 1000,\n      \"deaths\": 1000,\n      \"suicides\": 100,\n      \"assists\": 1000,\n      \"damage\": 100000.7,\n      \"score\": 50000,\n      \"xp\": 25000,\n      \"roundWins\": 200,\n      \"killsAndAssists\": 2000,\n      \"matchWins\": 45,\n      \"itemsPickedUp\": 500,\n      \"hits\": 5000,\n      \"shotsFired\": 8000,\n      \"precisionHits\": 1500,\n      \"precisionKills\": 150,\n      \"multikill2\": 50,\n      \"multikill3\": 20,\n      \"killstreak5\": 10,\n      \"capturePointCaptures\": 75,\n      \"matchTypes\": [\n        {\n          \"summedOver\": {\n            \"type\": \"MatchType\",\n            \"matchTypeSlug\": \"arenaranked\"\n          },\n          \"updatedAt\": \"2024-01-01T00:10:00Z\",\n          \"matchesPlayed\": 15,\n          \"wins\": 10,\n          \"losses\": 5,\n          \"kills\": 100,\n          \"deaths\": 100,\n          \"suicides\": 10,\n          \"assists\": 100,\n          \"damage\": 1000.5,\n          \"score\": 5000,\n          \"xp\": 2500,\n          \"roundWins\": 30,\n          \"multikill2\": 8\n        },\n        {\n          \"summedOver\": {\n            \"type\": \"MatchType\",\n            \"matchTypeSlug\": \"arenaunranked\"\n          },\n          \"updatedAt\": \"2023-12-31T23:50:00Z\",\n          \"matchesPlayed\": 100,\n          \"wins\": 50,\n          \"losses\": 50,\n          \"kills\": 900,\n          \"deaths\": 900,\n          \"suicides\": 90,\n          \"assists\": 900,\n          \"damage\": 9000.2,\n          \"score\": 45000,\n          \"xp\": 22500,\n          \"roundWins\": 170,\n          \"multikill2\": 42\n        }\n      ],\n      \"seasons\": [\n        {\n          \"summedOver\": {\n            \"type\": \"Season\",\n            \"seasonSlug\": \"season_1\"\n          },\n          \"updatedAt\": \"2024-01-01T00:10:00Z\",\n          \"matchesPlayed\": 15,\n          \"wins\": 10,\n          \"losses\": 5,\n          \"kills\": 100,\n          \"deaths\": 100,\n          \"suicides\": 10,\n          \"assists\": 100,\n          \"damage\": 1000.5,\n          \"score\": 5000,\n          \"xp\": 2500,\n          \"roundWins\": 30,\n          \"multikill2\": 8\n        },\n        {\n          \"summedOver\": {\n            \"type\": \"Season\",\n            \"seasonSlug\": \"season_0\"\n          },\n          \"updatedAt\": \"2023-12-31T23:50:00Z\",\n          \"matchesPlayed\": 100,\n          \"wins\": 50,\n          \"losses\": 50,\n          \"kills\": 900,\n          \"deaths\": 900,\n          \"suicides\": 90,\n          \"assists\": 900,\n          \"damage\": 9000.2,\n          \"score\": 45000,\n          \"xp\": 22500,\n          \"roundWins\": 170,\n          \"multikill2\": 42\n        }\n      ]\n    },\n    {\n      \"summedOver\": {\n        \"type\": \"Career\"\n      },\n      \"updatedAt\": \"2024-01-01T00:10:00Z\",\n      \"matchesPlayed\": 100,\n      \"wins\": 50,\n      \"losses\": 50,\n      \"kills\": 1000,\n      \"deaths\": 1000,\n      \"suicides\": 100,\n      \"assists\": 1000,\n      \"damage\": 100000.7,\n      \"score\": 50000,\n      \"xp\": 25000,\n      \"roundWins\": 200,\n      \"killsAndAssists\": 2000,\n      \"matchWins\": 45,\n      \"itemsPickedUp\": 500,\n      \"hits\": 5000,\n      \"shotsFired\": 8000,\n      \"precisionHits\": 1500,\n      \"precisionKills\": 150,\n      \"multikill2\": 50,\n      \"multikill3\": 20,\n      \"killstreak5\": 10,\n      \"capturePointCaptures\": 75,\n      \"matchTypes\": [\n        {\n          \"summedOver\": {\n            \"type\": \"MatchType\",\n            \"matchTypeSlug\": \"arenaranked\"\n          },\n          \"updatedAt\": \"2024-01-01T00:10:00Z\",\n          \"matchesPlayed\": 15,\n          \"wins\": 10,\n          \"losses\": 5,\n          \"kills\": 100,\n          \"deaths\": 100,\n          \"suicides\": 10,\n          \"assists\": 100,\n          \"damage\": 1000.5,\n          \"score\": 5000,\n          \"xp\": 2500,\n          \"roundWins\": 30,\n          \"multikill2\": 8\n        },\n        {\n          \"summedOver\": {\n            \"type\": \"MatchType\",\n            \"matchTypeSlug\": \"arenaunranked\"\n          },\n          \"updatedAt\": \"2023-12-31T23:50:00Z\",\n          \"matchesPlayed\": 100,\n          \"wins\": 50,\n          \"losses\": 50,\n          \"kills\": 900,\n          \"deaths\": 900,\n          \"suicides\": 90,\n          \"assists\": 900,\n          \"damage\": 9000.2,\n          \"score\": 45000,\n          \"xp\": 22500,\n          \"roundWins\": 170,\n          \"multikill2\": 42\n        }\n      ],\n      \"seasons\": [\n        {\n          \"summedOver\": {\n            \"type\": \"Season\",\n            \"seasonSlug\": \"season_1\"\n          },\n          \"updatedAt\": \"2024-01-01T00:10:00Z\",\n          \"matchesPlayed\": 15,\n          \"wins\": 10,\n          \"losses\": 5,\n          \"kills\": 100,\n          \"deaths\": 100,\n          \"suicides\": 10,\n          \"assists\": 100,\n          \"damage\": 1000.5,\n          \"score\": 5000,\n          \"xp\": 2500,\n          \"roundWins\": 30,\n          \"multikill2\": 8\n        },\n        {\n          \"summedOver\": {\n            \"type\": \"Season\",\n            \"seasonSlug\": \"season_0\"\n          },\n          \"updatedAt\": \"2023-12-31T23:50:00Z\",\n          \"matchesPlayed\": 100,\n          \"wins\": 50,\n          \"losses\": 50,\n          \"kills\": 900,\n          \"deaths\": 900,\n          \"suicides\": 90,\n          \"assists\": 900,\n          \"damage\": 9000.2,\n          \"score\": 45000,\n          \"xp\": 22500,\n          \"roundWins\": 170,\n          \"multikill2\": 42\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "62ef5614-55f2-40b3-8082-77c1abef2279",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "stats"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"INVALID_REQUEST\",\n  \"message\": \"The request is invalid.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"InvalidArgument\",\n    \"violations\": [\n      {\n        \"field\": \"playerId\",\n        \"reason\": \"MISSING_REQUIRED\",\n        \"message\": \"The playerId parameter cannot be empty.\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ebb7e2cc-2a38-4aee-8222-bfb1b0bddd24",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "stats"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"UNAUTHENTICATED\",\n  \"message\": \"The request could not be authenticated.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"Unauthenticated\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c2211a2c-77f1-41ec-aa2a-d072586ded6d",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "stats"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"PERMISSION_DENIED\",\n  \"message\": \"The client does not have permission to access this resource.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"PermissionDenied\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "961cec45-dddc-4f4d-b7ad-7d23cea68229",
+              "name": "Player Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "stats"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"PLAYER_NOT_FOUND\",\n  \"message\": \"No player found for the given player ID.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"NotFound\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "57937516-944e-4368-b991-d015ece2bfb5",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "stats"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"UNEXPECTED_ERROR\",\n  \"message\": \"An unexpected error occurred.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"Internal\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6fc282f2-91d0-4499-8704-62cbfc35a5c2",
+          "name": "Get current player ranks",
+          "request": {
+            "name": "Get current player ranks",
+            "description": {
+              "content": "Retrieve current ranks for a player",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "game",
+                "splitgate2",
+                "players",
+                ":playerId",
+                "ranks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "playerId",
+                  "description": "(Required) Player ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f83ff1e7-0645-498a-b52c-65a36c22e3df",
+              "name": "Player rank",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "ranks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"matchTypeSlug\": \"arenaranked\",\n      \"rankSlug\": \"bronze\",\n      \"placement\": {\n        \"absolutePoints\": 0,\n        \"absolutePlacement\": 1,\n        \"maximumPlacement\": 10\n      },\n      \"updatedAt\": \"2024-01-01T00:10:00Z\"\n    },\n    {\n      \"matchTypeSlug\": \"arenaranked\",\n      \"rankSlug\": \"bronze\",\n      \"placement\": {\n        \"absolutePoints\": 0,\n        \"absolutePlacement\": 1,\n        \"maximumPlacement\": 10\n      },\n      \"updatedAt\": \"2024-01-01T00:10:00Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a1f9e9b-6c25-4096-97b2-a7199135f564",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "ranks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"INVALID_REQUEST\",\n  \"message\": \"The request is invalid.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"InvalidArgument\",\n    \"violations\": [\n      {\n        \"field\": \"playerId\",\n        \"reason\": \"MISSING_REQUIRED\",\n        \"message\": \"The playerId parameter cannot be empty.\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91f9f663-eb9f-4daf-8058-c43ae41153c6",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "ranks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"UNAUTHENTICATED\",\n  \"message\": \"The request could not be authenticated.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"Unauthenticated\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3af210d2-cca0-42d6-b201-4b328f0c695e",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "ranks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"PERMISSION_DENIED\",\n  \"message\": \"The client does not have permission to access this resource.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"PermissionDenied\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b753f5f1-84a3-4810-ad9b-8ab8ded72fdf",
+              "name": "Player Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "ranks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"PLAYER_NOT_FOUND\",\n  \"message\": \"No player found for the given player ID.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"NotFound\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4d08d14e-76f1-4ece-882a-cb66c471c6b7",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "ranks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"UNEXPECTED_ERROR\",\n  \"message\": \"An unexpected error occurred.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"Internal\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "732fa7fb-d224-433c-a5dd-1d05823f92d3",
+          "name": "Get player match history",
+          "request": {
+            "name": "Get player match history",
+            "description": {
+              "content": "Retrieve match history for a player.\nThe match history is returned in reverse chronological order,\nwith the most recent matches first.\nThe query will return a number of results less than or equal to the\nprovided limit (default 25).\nThe response includes a page anchor that can be used to retrieve the\nnext page of matches.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "game",
+                "splitgate2",
+                "players",
+                ":playerId",
+                "matches"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "25",
+                  "description": "Maximum number of matches to return.\nThe maximum number of matches that can be returned is 100.\nIf no limit is provided, the default limit of 25 will be used."
+                },
+                {
+                  "disabled": false,
+                  "key": "anchor",
+                  "value": "<string>",
+                  "description": "Opaque page anchor provided by the previous response in order to\npaginate results.\nPage anchors are only valid in the context of a single query.\nThey should not be persisted or used across multiple queries."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "playerId",
+                  "description": "(Required) Player ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1fae9aad-abbb-433a-a7a4-a4ae81255931",
+              "name": "Player match history",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "matches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "anchor",
+                      "value": "abc123="
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"matchId\": \"2443ceef-3e4c-45a3-8d18-ff87e22c7cb6\",\n      \"joinedAt\": \"2024-01-01T00:00:00Z\",\n      \"leftAt\": \"2024-01-01T00:00:00Z\",\n      \"playlistSlug\": \"arena_unranked_quickplay\",\n      \"mapSlug\": \"academy\",\n      \"platform\": \"Steam\",\n      \"stats\": {\n        \"summedOver\": {\n          \"type\": \"Career\"\n        },\n        \"updatedAt\": \"2024-01-01T00:10:00Z\",\n        \"matchesPlayed\": 100,\n        \"wins\": 50,\n        \"losses\": 50,\n        \"kills\": 1000,\n        \"deaths\": 1000,\n        \"suicides\": 100,\n        \"assists\": 1000,\n        \"damage\": 100000.7,\n        \"score\": 50000,\n        \"xp\": 25000,\n        \"roundWins\": 200,\n        \"killsAndAssists\": 2000,\n        \"matchWins\": 45,\n        \"itemsPickedUp\": 500,\n        \"hits\": 5000,\n        \"shotsFired\": 8000,\n        \"precisionHits\": 1500,\n        \"precisionKills\": 150,\n        \"multikill2\": 50,\n        \"multikill3\": 20,\n        \"killstreak5\": 10,\n        \"capturePointCaptures\": 75,\n        \"matchTypes\": [\n          {\n            \"summedOver\": {\n              \"type\": \"MatchType\",\n              \"matchTypeSlug\": \"arenaranked\"\n            },\n            \"updatedAt\": \"2024-01-01T00:10:00Z\",\n            \"matchesPlayed\": 15,\n            \"wins\": 10,\n            \"losses\": 5,\n            \"kills\": 100,\n            \"deaths\": 100,\n            \"suicides\": 10,\n            \"assists\": 100,\n            \"damage\": 1000.5,\n            \"score\": 5000,\n            \"xp\": 2500,\n            \"roundWins\": 30,\n            \"multikill2\": 8\n          },\n          {\n            \"summedOver\": {\n              \"type\": \"MatchType\",\n              \"matchTypeSlug\": \"arenaunranked\"\n            },\n            \"updatedAt\": \"2023-12-31T23:50:00Z\",\n            \"matchesPlayed\": 100,\n            \"wins\": 50,\n            \"losses\": 50,\n            \"kills\": 900,\n            \"deaths\": 900,\n            \"suicides\": 90,\n            \"assists\": 900,\n            \"damage\": 9000.2,\n            \"score\": 45000,\n            \"xp\": 22500,\n            \"roundWins\": 170,\n            \"multikill2\": 42\n          }\n        ],\n        \"seasons\": [\n          {\n            \"summedOver\": {\n              \"type\": \"Season\",\n              \"seasonSlug\": \"season_1\"\n            },\n            \"updatedAt\": \"2024-01-01T00:10:00Z\",\n            \"matchesPlayed\": 15,\n            \"wins\": 10,\n            \"losses\": 5,\n            \"kills\": 100,\n            \"deaths\": 100,\n            \"suicides\": 10,\n            \"assists\": 100,\n            \"damage\": 1000.5,\n            \"score\": 5000,\n            \"xp\": 2500,\n            \"roundWins\": 30,\n            \"multikill2\": 8\n          },\n          {\n            \"summedOver\": {\n              \"type\": \"Season\",\n              \"seasonSlug\": \"season_0\"\n            },\n            \"updatedAt\": \"2023-12-31T23:50:00Z\",\n            \"matchesPlayed\": 100,\n            \"wins\": 50,\n            \"losses\": 50,\n            \"kills\": 900,\n            \"deaths\": 900,\n            \"suicides\": 90,\n            \"assists\": 900,\n            \"damage\": 9000.2,\n            \"score\": 45000,\n            \"xp\": 22500,\n            \"roundWins\": 170,\n            \"multikill2\": 42\n          }\n        ]\n      }\n    },\n    {\n      \"matchId\": \"2443ceef-3e4c-45a3-8d18-ff87e22c7cb6\",\n      \"joinedAt\": \"2024-01-01T00:00:00Z\",\n      \"leftAt\": \"2024-01-01T00:00:00Z\",\n      \"playlistSlug\": \"arena_unranked_quickplay\",\n      \"mapSlug\": \"academy\",\n      \"platform\": \"Steam\",\n      \"stats\": {\n        \"summedOver\": {\n          \"type\": \"Career\"\n        },\n        \"updatedAt\": \"2024-01-01T00:10:00Z\",\n        \"matchesPlayed\": 100,\n        \"wins\": 50,\n        \"losses\": 50,\n        \"kills\": 1000,\n        \"deaths\": 1000,\n        \"suicides\": 100,\n        \"assists\": 1000,\n        \"damage\": 100000.7,\n        \"score\": 50000,\n        \"xp\": 25000,\n        \"roundWins\": 200,\n        \"killsAndAssists\": 2000,\n        \"matchWins\": 45,\n        \"itemsPickedUp\": 500,\n        \"hits\": 5000,\n        \"shotsFired\": 8000,\n        \"precisionHits\": 1500,\n        \"precisionKills\": 150,\n        \"multikill2\": 50,\n        \"multikill3\": 20,\n        \"killstreak5\": 10,\n        \"capturePointCaptures\": 75,\n        \"matchTypes\": [\n          {\n            \"summedOver\": {\n              \"type\": \"MatchType\",\n              \"matchTypeSlug\": \"arenaranked\"\n            },\n            \"updatedAt\": \"2024-01-01T00:10:00Z\",\n            \"matchesPlayed\": 15,\n            \"wins\": 10,\n            \"losses\": 5,\n            \"kills\": 100,\n            \"deaths\": 100,\n            \"suicides\": 10,\n            \"assists\": 100,\n            \"damage\": 1000.5,\n            \"score\": 5000,\n            \"xp\": 2500,\n            \"roundWins\": 30,\n            \"multikill2\": 8\n          },\n          {\n            \"summedOver\": {\n              \"type\": \"MatchType\",\n              \"matchTypeSlug\": \"arenaunranked\"\n            },\n            \"updatedAt\": \"2023-12-31T23:50:00Z\",\n            \"matchesPlayed\": 100,\n            \"wins\": 50,\n            \"losses\": 50,\n            \"kills\": 900,\n            \"deaths\": 900,\n            \"suicides\": 90,\n            \"assists\": 900,\n            \"damage\": 9000.2,\n            \"score\": 45000,\n            \"xp\": 22500,\n            \"roundWins\": 170,\n            \"multikill2\": 42\n          }\n        ],\n        \"seasons\": [\n          {\n            \"summedOver\": {\n              \"type\": \"Season\",\n              \"seasonSlug\": \"season_1\"\n            },\n            \"updatedAt\": \"2024-01-01T00:10:00Z\",\n            \"matchesPlayed\": 15,\n            \"wins\": 10,\n            \"losses\": 5,\n            \"kills\": 100,\n            \"deaths\": 100,\n            \"suicides\": 10,\n            \"assists\": 100,\n            \"damage\": 1000.5,\n            \"score\": 5000,\n            \"xp\": 2500,\n            \"roundWins\": 30,\n            \"multikill2\": 8\n          },\n          {\n            \"summedOver\": {\n              \"type\": \"Season\",\n              \"seasonSlug\": \"season_0\"\n            },\n            \"updatedAt\": \"2023-12-31T23:50:00Z\",\n            \"matchesPlayed\": 100,\n            \"wins\": 50,\n            \"losses\": 50,\n            \"kills\": 900,\n            \"deaths\": 900,\n            \"suicides\": 90,\n            \"assists\": 900,\n            \"damage\": 9000.2,\n            \"score\": 45000,\n            \"xp\": 22500,\n            \"roundWins\": 170,\n            \"multikill2\": 42\n          }\n        ]\n      }\n    }\n  ],\n  \"totalItemCount\": 3,\n  \"nextPageAnchor\": \"abc123=\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d8a511f3-195f-4cb4-a2b0-477b6560565c",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "matches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "anchor",
+                      "value": "abc123="
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"INVALID_REQUEST\",\n  \"message\": \"The request is invalid.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"InvalidArgument\",\n    \"violations\": [\n      {\n        \"field\": \"playerId\",\n        \"reason\": \"MISSING_REQUIRED\",\n        \"message\": \"The playerId parameter cannot be empty.\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cf20523f-aca7-485c-a206-8473efbbb271",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "matches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "anchor",
+                      "value": "abc123="
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"UNAUTHENTICATED\",\n  \"message\": \"The request could not be authenticated.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"Unauthenticated\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "24a31119-27be-42b9-807c-21014a4687c0",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "matches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "anchor",
+                      "value": "abc123="
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"PERMISSION_DENIED\",\n  \"message\": \"The client does not have permission to access this resource.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"PermissionDenied\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a06bf589-c730-4c86-9288-8a5ee654067e",
+              "name": "Player Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "matches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "anchor",
+                      "value": "abc123="
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"PLAYER_NOT_FOUND\",\n  \"message\": \"No player found for the given player ID.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"NotFound\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4dc2fd97-3ac6-43a4-b588-68da6e519dce",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "players",
+                    ":playerId",
+                    "matches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "anchor",
+                      "value": "abc123="
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) Player ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"UNEXPECTED_ERROR\",\n  \"message\": \"An unexpected error occurred.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"Internal\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.1047games.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "d5ec0e91-a511-4842-bdec-181d73375706",
+    "name": "1047 Games Third-Party Players API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "API for retrieving player statistics, player ranks, match history, and\nmatch details from 1047 Games.",
+      "type": "text/plain"
+    }
+  }
+}

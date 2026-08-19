@@ -1,0 +1,124 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "1047 Games Third-Party Players API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Players",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search for players",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.1047games.com/v1/search/players",
+            "params": [
+              {
+                "name": "term",
+                "value": "TheRizzler",
+                "type": "query",
+                "description": "The search term to use for the player search.\nThe currently supported search terms are player display\nname and player id equality.\nThe search term is case-insensitive and will return players\nthat match the query.\nResults are returned in order of relevance to the search term."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Maximum number of results to return.\nThe maximum number of results that can be returned is 100.\nIf no limit is provided, the default limit of 25 will be used."
+              },
+              {
+                "name": "anchor",
+                "value": "abc123=",
+                "type": "query",
+                "description": "Opaque page anchor provided by the previous response in order to\npaginate results.\nPage anchors are only valid in the context of a single query.\nThey should not be persisted or used across multiple queries."
+              }
+            ]
+          },
+          "docs": "Search for players and get their player IDs.\nThe search is case-insensitive and will return players that\nmatch the query.\nThe search will return a number of results less than or equal\nto the provided limit (default 25).\nThe response includes a page anchor that can be used to retrieve\nthe next page of results."
+        },
+        {
+          "info": {
+            "name": "Get player statistics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.1047games.com/v1/game/splitgate2/players/:playerId/stats",
+            "params": [
+              {
+                "name": "playerId",
+                "value": "09b74ba4-408f-4121-bf50-7edf11332a65",
+                "type": "path",
+                "description": "Player ID"
+              }
+            ]
+          },
+          "docs": "Retrieve comprehensive statistics for a player.\nThe stats are provided aggregated over all game modes, and split\nby game mode.\nGame modes are the top-level categories of gameplay at 1047Games,\ni.e. Ranked Arena, Unranked Arena, and Custom.\n\nQuerying stats for a player by season is not yet supported, but\nwill be added in the future in a non-breaking fashion.\n\nSumming stats over specific game variant or weapon is not yet\nsupported."
+        },
+        {
+          "info": {
+            "name": "Get current player ranks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.1047games.com/v1/game/splitgate2/players/:playerId/ranks",
+            "params": [
+              {
+                "name": "playerId",
+                "value": "09b74ba4-408f-4121-bf50-7edf11332a65",
+                "type": "path",
+                "description": "Player ID"
+              }
+            ]
+          },
+          "docs": "Retrieve current ranks for a player"
+        },
+        {
+          "info": {
+            "name": "Get player match history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.1047games.com/v1/game/splitgate2/players/:playerId/matches",
+            "params": [
+              {
+                "name": "playerId",
+                "value": "09b74ba4-408f-4121-bf50-7edf11332a65",
+                "type": "path",
+                "description": "Player ID"
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "Maximum number of matches to return.\nThe maximum number of matches that can be returned is 100.\nIf no limit is provided, the default limit of 25 will be used."
+              },
+              {
+                "name": "anchor",
+                "value": "abc123=",
+                "type": "query",
+                "description": "Opaque page anchor provided by the previous response in order to\npaginate results.\nPage anchors are only valid in the context of a single query.\nThey should not be persisted or used across multiple queries."
+              }
+            ]
+          },
+          "docs": "Retrieve match history for a player.\nThe match history is returned in reverse chronological order,\nwith the most recent matches first.\nThe query will return a number of results less than or equal to the\nprovided limit (default 25).\nThe response includes a page anchor that can be used to retrieve the\nnext page of matches."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,418 @@
+{
+  "item": [
+    {
+      "id": "2513735e-ccd7-4e18-bd7c-0c55755d9f81",
+      "name": "Matches",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ab72b07a-c980-445d-b278-3daf558022f7",
+          "name": "Get match details",
+          "request": {
+            "name": "Get match details",
+            "description": {
+              "content": "Retrieve detailed information about a specific match.\nThe match details include the match status, start and end times, map,\ngame mode, and team details, including placement and members display\nnames and stats for the match.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "game",
+                "splitgate2",
+                "matches",
+                ":matchId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "matchId",
+                  "description": "(Required) Match ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cb8421e8-e0c8-402d-92af-769e8ade9b4c",
+              "name": "Match details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "matches",
+                    ":matchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "matchId",
+                      "description": "(Required) Match ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"matchId\": \"2443ceef-3e4c-45a3-8d18-ff87e22c7cb6\",\n  \"status\": \"Finished\",\n  \"updatedAt\": \"2024-01-01T00:10:00Z\",\n  \"startedAt\": \"2024-01-01T00:00:00Z\",\n  \"mapSlug\": \"Academy\",\n  \"matchTypeSlug\": \"arenaunranked\",\n  \"gameModeSlug\": \"arena_capture_hotzone\",\n  \"teams\": [\n    {\n      \"teamId\": \"b0f57b43-9ef1-4f13-9066-f04f3bbad86a\",\n      \"placement\": 1,\n      \"members\": [\n        {\n          \"playerId\": \"09b74ba4-408f-4121-bf50-7edf11332a65\",\n          \"displayName\": \"TheRizzler\",\n          \"platform\": \"Steam\",\n          \"stats\": {\n            \"summedOver\": {\n              \"type\": \"Match\",\n              \"matchId\": \"2443ceef-3e4c-45a3-8d18-ff87e22c7cb6\"\n            },\n            \"updatedAt\": \"2024-01-01T00:10:00Z\",\n            \"matchesPlayed\": 1,\n            \"wins\": 1,\n            \"kills\": 10,\n            \"deaths\": 2,\n            \"suicides\": 1,\n            \"assists\": 5,\n            \"damage\": 1000.5,\n            \"score\": 2500,\n            \"xp\": 1200,\n            \"roundWins\": 3,\n            \"hits\": 25,\n            \"shotsFired\": 35,\n            \"precisionKills\": 3,\n            \"multikill2\": 1\n          }\n        },\n        {\n          \"playerId\": \"09b74ba4-408f-4121-bf50-7edf11332a65\",\n          \"displayName\": \"TheRizzler\",\n          \"platform\": \"Steam\",\n          \"stats\": {\n            \"summedOver\": {\n              \"type\": \"Match\",\n              \"matchId\": \"2443ceef-3e4c-45a3-8d18-ff87e22c7cb6\"\n            },\n            \"updatedAt\": \"2024-01-01T00:10:00Z\",\n            \"matchesPlayed\": 1,\n            \"wins\": 1,\n            \"kills\": 10,\n            \"deaths\": 2,\n            \"suicides\": 1,\n            \"assists\": 5,\n            \"damage\": 1000.5,\n            \"score\": 2500,\n            \"xp\": 1200,\n            \"roundWins\": 3,\n            \"hits\": 25,\n            \"shotsFired\": 35,\n            \"precisionKills\": 3,\n            \"multikill2\": 1\n          }\n        }\n      ]\n    },\n    {\n      \"teamId\": \"b0f57b43-9ef1-4f13-9066-f04f3bbad86a\",\n      \"placement\": 1,\n      \"members\": [\n        {\n          \"playerId\": \"09b74ba4-408f-4121-bf50-7edf11332a65\",\n          \"displayName\": \"TheRizzler\",\n          \"platform\": \"Steam\",\n          \"stats\": {\n            \"summedOver\": {\n              \"type\": \"Match\",\n              \"matchId\": \"2443ceef-3e4c-45a3-8d18-ff87e22c7cb6\"\n            },\n            \"updatedAt\": \"2024-01-01T00:10:00Z\",\n            \"matchesPlayed\": 1,\n            \"wins\": 1,\n            \"kills\": 10,\n            \"deaths\": 2,\n            \"suicides\": 1,\n            \"assists\": 5,\n            \"damage\": 1000.5,\n            \"score\": 2500,\n            \"xp\": 1200,\n            \"roundWins\": 3,\n            \"hits\": 25,\n            \"shotsFired\": 35,\n            \"precisionKills\": 3,\n            \"multikill2\": 1\n          }\n        },\n        {\n          \"playerId\": \"09b74ba4-408f-4121-bf50-7edf11332a65\",\n          \"displayName\": \"TheRizzler\",\n          \"platform\": \"Steam\",\n          \"stats\": {\n            \"summedOver\": {\n              \"type\": \"Match\",\n              \"matchId\": \"2443ceef-3e4c-45a3-8d18-ff87e22c7cb6\"\n            },\n            \"updatedAt\": \"2024-01-01T00:10:00Z\",\n            \"matchesPlayed\": 1,\n            \"wins\": 1,\n            \"kills\": 10,\n            \"deaths\": 2,\n            \"suicides\": 1,\n            \"assists\": 5,\n            \"damage\": 1000.5,\n            \"score\": 2500,\n            \"xp\": 1200,\n            \"roundWins\": 3,\n            \"hits\": 25,\n            \"shotsFired\": 35,\n            \"precisionKills\": 3,\n            \"multikill2\": 1\n          }\n        }\n      ]\n    }\n  ],\n  \"endedAt\": \"2024-01-01T00:10:00Z\",\n  \"playlistSlug\": \"arena_unranked_quickplay\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a714886-6e82-4816-a5b6-1969f40e60ca",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "matches",
+                    ":matchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "matchId",
+                      "description": "(Required) Match ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"INVALID_REQUEST\",\n  \"message\": \"The request is invalid.\",\n  \"domain\": \"Matches\",\n  \"error\": {\n    \"status\": \"InvalidArgument\",\n    \"violations\": [\n      {\n        \"field\": \"matchId\",\n        \"reason\": \"MISSING_REQUIRED\",\n        \"message\": \"The matchId parameter cannot be empty.\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5c8c1d8d-6c2d-44c0-9f1a-75d125d4a0f9",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "matches",
+                    ":matchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "matchId",
+                      "description": "(Required) Match ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"UNAUTHENTICATED\",\n  \"message\": \"The request could not be authenticated.\",\n  \"domain\": \"Matches\",\n  \"error\": {\n    \"status\": \"Unauthenticated\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a8cc7bd8-283f-4150-be64-cdb9a4f8e1c0",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "matches",
+                    ":matchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "matchId",
+                      "description": "(Required) Match ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"PERMISSION_DENIED\",\n  \"message\": \"The client does not have permission to access this resource.\",\n  \"domain\": \"Matches\",\n  \"error\": {\n    \"status\": \"PermissionDenied\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f6a2a85-5eea-4855-83de-7ad000fe3504",
+              "name": "Match Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "matches",
+                    ":matchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "matchId",
+                      "description": "(Required) Match ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"MATCH_NOT_FOUND\",\n  \"message\": \"No match found for the given match ID.\",\n  \"domain\": \"Matches\",\n  \"error\": {\n    \"status\": \"NotFound\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd8741ab-ea1f-4e59-a017-e0ad95347753",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "game",
+                    "splitgate2",
+                    "matches",
+                    ":matchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "matchId",
+                      "description": "(Required) Match ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reason\": \"UNEXPECTED_ERROR\",\n  \"message\": \"An unexpected error occurred.\",\n  \"domain\": \"Players\",\n  \"error\": {\n    \"status\": \"Internal\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.1047games.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f2ab46e8-97eb-49ff-8a80-798cdd7028bd",
+    "name": "1047 Games Third-Party Matches API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "API for retrieving player statistics, player ranks, match history, and\nmatch details from 1047 Games.",
+      "type": "text/plain"
+    }
+  }
+}
