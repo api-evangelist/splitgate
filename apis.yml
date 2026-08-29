@@ -9,6 +9,19 @@ description: 'Splitgate is the free-to-play sci-fi arena first-person shooter fr
   and per-mode statistics, competitive ranks, match history and full match details
   so community stat trackers, esports tooling and leaderboard sites can build against
   real game data.'
+deliveryModel:
+  model: unknown
+  open_source: unknown
+  commercial: true
+  callable_host: false
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - openapi
+  - pricing
+  - repository-unlicensed
+  generated: '2026-08-28'
+  method: derived
 image: https://lp-cms-prod.images.maverick-rooster.prod.1047games.com/tiny_Rooster_Social_Discord_Banner_960x540_2a5d61e42b.png
 url: https://raw.githubusercontent.com/api-evangelist/splitgate/refs/heads/main/apis.yml
 x-type: company
@@ -102,6 +115,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: IssueTracker
+  url: https://github.com/1047Games/sdk-api/issues
 - type: AgentSkill
   url: skills/splitgate-match-history.md
 - type: Overlay
