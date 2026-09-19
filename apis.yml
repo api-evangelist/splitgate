@@ -95,6 +95,8 @@ apis:
   humanURL: https://1047games.github.io/sdk-api/
   baseURL: https://api.1047games.com
   tags:
+  - Player
+  tags_raw:
   - Players
   properties:
   - type: OpenAPI
