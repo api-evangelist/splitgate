@@ -1,8 +1,7 @@
 {
   "provider": "splitgate",
   "sources": [
-    "splitgate-matches-api-openapi.yml",
-    "splitgate-players-api-openapi.yml"
+    "_original/splitgate-third-party-openapi-original.yml"
   ],
   "outputs": [
     "splitgate-matches-api-openapi.yml",
@@ -12,9 +11,14 @@
   "errors": [],
   "warnings": [],
   "notes": [
-    "splitgate-matches-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
-    "splitgate-players-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "splitgate-third-party-openapi-original.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "splitgate-third-party-openapi-original.yml: declared missing tag: Matches",
+    "splitgate-third-party-openapi-original.yml: declared missing tag: Players",
     "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "splitgate-matches-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "splitgate-players-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
