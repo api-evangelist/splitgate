@@ -10,17 +10,20 @@ description: 'Splitgate is the free-to-play sci-fi arena first-person shooter fr
   so community stat trackers, esports tooling and leaderboard sites can build against
   real game data.'
 deliveryModel:
-  model: unknown
+  model: saas
+  license_evidence:
+    not_product:
+    - 1047games/sdk-api
   open_source: unknown
   commercial: true
   callable_host: false
-  label: Delivery model not determined — needs a product licence on record
+  label: Hosted service · you call their endpoint
   confidence: low
   source:
   - openapi
   - pricing
-  - repository-unlicensed
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: unknown
