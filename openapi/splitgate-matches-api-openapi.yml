@@ -107,90 +107,6 @@ paths:
                   status: Internal
 components:
   schemas:
-    StatsSummedOverSeason:
-      type: object
-      required:
-      - type
-      - seasonSlug
-      properties:
-        type:
-          type: string
-          enum:
-          - Season
-          example: Season
-        seasonSlug:
-          type: string
-          description: The human-readable identifer for the season
-          example: season_0
-    StatsSummedOver:
-      oneOf:
-      - $ref: '#/components/schemas/StatsSummedOverCareer'
-      - $ref: '#/components/schemas/StatsSummedOverMatch'
-      - $ref: '#/components/schemas/StatsSummedOverSeason'
-      - $ref: '#/components/schemas/StatsSummedOverGameMode'
-      discriminator:
-        propertyName: type
-        mapping:
-          Career: '#/components/schemas/StatsSummedOverCareer'
-          Match: '#/components/schemas/StatsSummedOverMatch'
-          Season: '#/components/schemas/StatsSummedOverSeason'
-          GameMode: '#/components/schemas/StatsSummedOverGameMode'
-      example:
-        type: Career
-    ErrorInfo:
-      oneOf:
-      - $ref: '#/components/schemas/InvalidArgument'
-      - $ref: '#/components/schemas/NotFound'
-      - $ref: '#/components/schemas/PermissionDenied'
-      - $ref: '#/components/schemas/Unauthenticated'
-      - $ref: '#/components/schemas/ResourceExhausted'
-      - $ref: '#/components/schemas/FailedPrecondition'
-      - $ref: '#/components/schemas/Aborted'
-      - $ref: '#/components/schemas/OutOfRange'
-      - $ref: '#/components/schemas/Unimplemented'
-      - $ref: '#/components/schemas/Internal'
-      - $ref: '#/components/schemas/Unavailable'
-      - $ref: '#/components/schemas/DataLoss'
-      discriminator:
-        propertyName: status
-        mapping:
-          InvalidArgument: '#/components/schemas/InvalidArgument'
-          NotFound: '#/components/schemas/NotFound'
-          PermissionDenied: '#/components/schemas/PermissionDenied'
-          Unauthenticated: '#/components/schemas/Unauthenticated'
-          ResourceExhausted: '#/components/schemas/ResourceExhausted'
-          FailedPrecondition: '#/components/schemas/FailedPrecondition'
-          Aborted: '#/components/schemas/Aborted'
-          OutOfRange: '#/components/schemas/OutOfRange'
-          Unimplemented: '#/components/schemas/Unimplemented'
-          Internal: '#/components/schemas/Internal'
-          Unavailable: '#/components/schemas/Unavailable'
-          DataLoss: '#/components/schemas/DataLoss'
-    StatsSummedOverMatch:
-      type: object
-      required:
-      - type
-      - matchId
-      properties:
-        type:
-          type: string
-          enum:
-          - Match
-          example: Match
-        matchId:
-          type: string
-          description: The ID of the match
-          example: 2443ceef-3e4c-45a3-8d18-ff87e22c7cb6
-    StatsSummedOverCareer:
-      type: object
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - Career
-          example: Career
     ResourceExhausted:
       type: object
       properties:
@@ -203,114 +119,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/QuotaViolation'
-    FailedPrecondition:
+    InvalidArgument:
       type: object
       properties:
         status:
           type: string
           enum:
-          - FailedPrecondition
-          example: FailedPrecondition
+          - InvalidArgument
+          example: InvalidArgument
         violations:
           type: array
           items:
-            $ref: '#/components/schemas/PreconditionViolation'
-    MatchDetails:
-      type: object
-      required:
-      - matchId
-      - status
-      - updatedAt
-      - startedAt
-      - mapSlug
-      - matchTypeSlug
-      - gameModeSlug
-      - teams
-      properties:
-        matchId:
-          type: string
-          description: Unique identifier for the match
-          example: 2443ceef-3e4c-45a3-8d18-ff87e22c7cb6
-        status:
-          type: string
-          description: Status of the match
-          enum:
-          - InProgress
-          - Finished
-          - Crashed
-          - Abandoned
-          example: Finished
-        updatedAt:
-          type: string
-          format: date-time
-          description: 'The timestamp at which the match was last updated in UTC timezone
-
-            formatted as an ISO 8601 string.'
-          example: '2024-01-01T00:10:00Z'
-        startedAt:
-          type: string
-          format: date-time
-          description: 'The timestamp at which the match started in UTC timezone
-
-            formatted as an ISO 8601 string.'
-          example: '2024-01-01T00:00:00Z'
-        endedAt:
-          type: string
-          format: date-time
-          description: 'The timestamp at which the match ended in UTC timezone
-
-            formatted as an ISO 8601 string.
-
-            This field is only present for finished matches.'
-          example: '2024-01-01T00:10:00Z'
-        matchTypeSlug:
-          type: string
-          description: Human readable identifier for the match type that the was played.
-          example: arenaunranked
-        gameModeSlug:
-          type: string
-          description: 'Human readable identifier for the game mode that the match was played in.
-
-            The game mode is the specific ruleset and play style used in the match.'
-          example: arena_capture_hotzone
-        playlistSlug:
-          type: string
-          description: 'Human readable identifier for the playlist that the match was played from.
-
-            The playlist is the experience that the players queue for.
-
-            Playlist is only present for matches that are played from the matchmaking queue.'
-          example: arena_unranked_quickplay
-        mapSlug:
-          type: string
-          description: Human readable identifier for the map that the match was played on
-          example: Academy
-        teams:
-          type: array
-          items:
-            $ref: '#/components/schemas/MatchTeamDetails'
-    QuotaViolation:
-      type: object
-      required:
-      - subject
-      - description
-      properties:
-        subject:
-          type: string
-          description: The subject of the quota violation
-          example: /v1/game/splitgate2/matches/{matchId}
-        description:
-          type: string
-          description: Description of the quota violation
-          example: The client has exceeded the maximum number of match detail requests per hour.
-    Aborted:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - Aborted
-          example: Aborted
+            $ref: '#/components/schemas/RequestViolation'
     MatchPlayerDetails:
       type: object
       required:
@@ -356,14 +176,126 @@ components:
           shotsFired: 35
           precisionKills: 3
           multikill2: 1
-    Unimplemented:
+    Unauthenticated:
       type: object
       properties:
         status:
           type: string
           enum:
-          - Unimplemented
-          example: Unimplemented
+          - Unauthenticated
+          example: Unauthenticated
+    StatsSummedOverSeason:
+      type: object
+      required:
+      - type
+      - seasonSlug
+      properties:
+        type:
+          type: string
+          enum:
+          - Season
+          example: Season
+        seasonSlug:
+          type: string
+          description: The human-readable identifer for the season
+          example: season_0
+    StatsSummedOver:
+      oneOf:
+      - $ref: '#/components/schemas/StatsSummedOverCareer'
+      - $ref: '#/components/schemas/StatsSummedOverMatch'
+      - $ref: '#/components/schemas/StatsSummedOverSeason'
+      - $ref: '#/components/schemas/StatsSummedOverGameMode'
+      discriminator:
+        propertyName: type
+        mapping:
+          Career: '#/components/schemas/StatsSummedOverCareer'
+          Match: '#/components/schemas/StatsSummedOverMatch'
+          Season: '#/components/schemas/StatsSummedOverSeason'
+          GameMode: '#/components/schemas/StatsSummedOverGameMode'
+      example:
+        type: Career
+    OutOfRange:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - OutOfRange
+          example: OutOfRange
+    Aborted:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - Aborted
+          example: Aborted
+    RequestViolation:
+      type: object
+      required:
+      - field
+      - description
+      - reason
+      properties:
+        field:
+          type: string
+          description: The path to the field that caused the error
+          example: playerId
+        description:
+          type: string
+          description: Description of why the field is invalid
+          example: The player ID must not be empty.
+        reason:
+          type: string
+          description: The reason code for the violation
+          example: MISSING_REQUIRED
+    StatsSummedOverCareer:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - Career
+          example: Career
+    DataLoss:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - DataLoss
+          example: DataLoss
+    StatsSummedOverMatch:
+      type: object
+      required:
+      - type
+      - matchId
+      properties:
+        type:
+          type: string
+          enum:
+          - Match
+          example: Match
+        matchId:
+          type: string
+          description: The ID of the match
+          example: 2443ceef-3e4c-45a3-8d18-ff87e22c7cb6
+    QuotaViolation:
+      type: object
+      required:
+      - subject
+      - description
+      properties:
+        subject:
+          type: string
+          description: The subject of the quota violation
+          example: /v1/game/splitgate2/matches/{matchId}
+        description:
+          type: string
+          description: Description of the quota violation
+          example: The client has exceeded the maximum number of match detail requests per hour.
     PermissionDenied:
       type: object
       properties:
@@ -372,14 +304,6 @@ components:
           enum:
           - PermissionDenied
           example: PermissionDenied
-    Internal:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - Internal
-          example: Internal
     MatchTeamDetails:
       type: object
       required:
@@ -772,26 +696,6 @@ components:
           xp: 22500
           roundWins: 170
           multikill2: 42
-    OutOfRange:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - OutOfRange
-          example: OutOfRange
-    InvalidArgument:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - InvalidArgument
-          example: InvalidArgument
-        violations:
-          type: array
-          items:
-            $ref: '#/components/schemas/RequestViolation'
     PreconditionViolation:
       type: object
       required:
@@ -811,6 +715,22 @@ components:
           type: string
           description: Description of the precondition violation
           example: The match has not finished yet.
+    Unavailable:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - Unavailable
+          example: Unavailable
+    Internal:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - Internal
+          example: Internal
     NotFound:
       type: object
       properties:
@@ -819,6 +739,35 @@ components:
           enum:
           - NotFound
           example: NotFound
+    ErrorInfo:
+      oneOf:
+      - $ref: '#/components/schemas/InvalidArgument'
+      - $ref: '#/components/schemas/NotFound'
+      - $ref: '#/components/schemas/PermissionDenied'
+      - $ref: '#/components/schemas/Unauthenticated'
+      - $ref: '#/components/schemas/ResourceExhausted'
+      - $ref: '#/components/schemas/FailedPrecondition'
+      - $ref: '#/components/schemas/Aborted'
+      - $ref: '#/components/schemas/OutOfRange'
+      - $ref: '#/components/schemas/Unimplemented'
+      - $ref: '#/components/schemas/Internal'
+      - $ref: '#/components/schemas/Unavailable'
+      - $ref: '#/components/schemas/DataLoss'
+      discriminator:
+        propertyName: status
+        mapping:
+          InvalidArgument: '#/components/schemas/InvalidArgument'
+          NotFound: '#/components/schemas/NotFound'
+          PermissionDenied: '#/components/schemas/PermissionDenied'
+          Unauthenticated: '#/components/schemas/Unauthenticated'
+          ResourceExhausted: '#/components/schemas/ResourceExhausted'
+          FailedPrecondition: '#/components/schemas/FailedPrecondition'
+          Aborted: '#/components/schemas/Aborted'
+          OutOfRange: '#/components/schemas/OutOfRange'
+          Unimplemented: '#/components/schemas/Unimplemented'
+          Internal: '#/components/schemas/Internal'
+          Unavailable: '#/components/schemas/Unavailable'
+          DataLoss: '#/components/schemas/DataLoss'
     ErrorResponse:
       type: object
       required:
@@ -869,6 +818,100 @@ components:
             matchId: 2443ceef-3e4c-45a3-8d18-ff87e22c7cb6
         error:
           $ref: '#/components/schemas/ErrorInfo'
+    Unimplemented:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - Unimplemented
+          example: Unimplemented
+    FailedPrecondition:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - FailedPrecondition
+          example: FailedPrecondition
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/PreconditionViolation'
+    MatchDetails:
+      type: object
+      required:
+      - matchId
+      - status
+      - updatedAt
+      - startedAt
+      - mapSlug
+      - matchTypeSlug
+      - gameModeSlug
+      - teams
+      properties:
+        matchId:
+          type: string
+          description: Unique identifier for the match
+          example: 2443ceef-3e4c-45a3-8d18-ff87e22c7cb6
+        status:
+          type: string
+          description: Status of the match
+          enum:
+          - InProgress
+          - Finished
+          - Crashed
+          - Abandoned
+          example: Finished
+        updatedAt:
+          type: string
+          format: date-time
+          description: 'The timestamp at which the match was last updated in UTC timezone
+
+            formatted as an ISO 8601 string.'
+          example: '2024-01-01T00:10:00Z'
+        startedAt:
+          type: string
+          format: date-time
+          description: 'The timestamp at which the match started in UTC timezone
+
+            formatted as an ISO 8601 string.'
+          example: '2024-01-01T00:00:00Z'
+        endedAt:
+          type: string
+          format: date-time
+          description: 'The timestamp at which the match ended in UTC timezone
+
+            formatted as an ISO 8601 string.
+
+            This field is only present for finished matches.'
+          example: '2024-01-01T00:10:00Z'
+        matchTypeSlug:
+          type: string
+          description: Human readable identifier for the match type that the was played.
+          example: arenaunranked
+        gameModeSlug:
+          type: string
+          description: 'Human readable identifier for the game mode that the match was played in.
+
+            The game mode is the specific ruleset and play style used in the match.'
+          example: arena_capture_hotzone
+        playlistSlug:
+          type: string
+          description: 'Human readable identifier for the playlist that the match was played from.
+
+            The playlist is the experience that the players queue for.
+
+            Playlist is only present for matches that are played from the matchmaking queue.'
+          example: arena_unranked_quickplay
+        mapSlug:
+          type: string
+          description: Human readable identifier for the map that the match was played on
+          example: Academy
+        teams:
+          type: array
+          items:
+            $ref: '#/components/schemas/MatchTeamDetails'
     StatsSummedOverGameMode:
       type: object
       required:
@@ -884,49 +927,6 @@ components:
           type: string
           description: The human-readable identifer for the match type
           example: arenaranked
-    RequestViolation:
-      type: object
-      required:
-      - field
-      - description
-      - reason
-      properties:
-        field:
-          type: string
-          description: The path to the field that caused the error
-          example: playerId
-        description:
-          type: string
-          description: Description of why the field is invalid
-          example: The player ID must not be empty.
-        reason:
-          type: string
-          description: The reason code for the violation
-          example: MISSING_REQUIRED
-    DataLoss:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - DataLoss
-          example: DataLoss
-    Unauthenticated:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - Unauthenticated
-          example: Unauthenticated
-    Unavailable:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - Unavailable
-          example: Unavailable
   securitySchemes:
     bearerToken:
       type: http
