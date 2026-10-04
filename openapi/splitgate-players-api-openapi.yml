@@ -512,20 +512,162 @@ paths:
                   status: Internal
 components:
   schemas:
-    PlayerSearchResult:
+    PreconditionViolation:
       type: object
       required:
-      - playerId
-      - displayName
+      - type
+      - subject
+      - description
       properties:
-        playerId:
+        type:
           type: string
-          description: Unique identifier for the player
-          example: 09b74ba4-408f-4121-bf50-7edf11332a65
-        displayName:
+          description: The type of precondition violation
+          example: MATCH_NOT_FINISHED
+        subject:
           type: string
-          description: Player's display name
-          example: TheRizzler
+          description: The subject of the precondition violation
+          example: /v1/game/splitgate2/matches/2443ceef-3e4c-45a3-8d18-ff87e22c7cb6
+        description:
+          type: string
+          description: Description of the precondition violation
+          example: The match has not finished yet.
+    StatsSummedOverGameMode:
+      type: object
+      required:
+      - type
+      - matchTypeSlug
+      properties:
+        type:
+          type: string
+          enum:
+          - MatchType
+          example: MatchType
+        matchTypeSlug:
+          type: string
+          description: The human-readable identifer for the match type
+          example: arenaranked
+    AbsolutePlayerRankPlacement:
+      type: object
+      required:
+      - absolutePoints
+      - absolutePlacement
+      - maximumPlacement
+      properties:
+        absolutePoints:
+          type: integer
+          description: 'The rank points of the player within the absolute rank.
+
+            There is no upper limit to the number of points a player can have in
+
+            an absolute placement rank.
+
+            Higher points indicate better performance.'
+          minimum: 0
+          example: 0
+        absolutePlacement:
+          type: integer
+          description: 'The 1-indexed placement of the player within the rank (between 1 and
+
+            maximumPlacement).
+
+            The placement is the rank of the player in the rank.
+
+            Lower placement values indicate better performance.'
+          minimum: 1
+          example: 1
+        maximumPlacement:
+          type: integer
+          description: 'The maximum placement of the rank (i.e. the worst placement a
+
+            player can achieve in the rank.)'
+          minimum: 1
+          example: 10
+    DataLoss:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - DataLoss
+          example: DataLoss
+    Unimplemented:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - Unimplemented
+          example: Unimplemented
+    PlayerRankPlacement:
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/AbsolutePlayerRankPlacement'
+      - $ref: '#/components/schemas/DivisionalPlayerRankPlacement'
+    StatsSummedOver:
+      oneOf:
+      - $ref: '#/components/schemas/StatsSummedOverCareer'
+      - $ref: '#/components/schemas/StatsSummedOverMatch'
+      - $ref: '#/components/schemas/StatsSummedOverSeason'
+      - $ref: '#/components/schemas/StatsSummedOverGameMode'
+      discriminator:
+        propertyName: type
+        mapping:
+          Career: '#/components/schemas/StatsSummedOverCareer'
+          Match: '#/components/schemas/StatsSummedOverMatch'
+          Season: '#/components/schemas/StatsSummedOverSeason'
+          GameMode: '#/components/schemas/StatsSummedOverGameMode'
+      example:
+        type: Career
+    ErrorResponse:
+      type: object
+      required:
+      - reason
+      - message
+      - domain
+      - metadata
+      - error
+      properties:
+        reason:
+          type: string
+          description: 'The reason code for the error.
+
+            The reason code is a short string that is used to identify the error.
+
+            The reason code is not localized and is intended for programmatic use.
+
+            It is recommended to use the reason code as a keyfor localization of
+
+            user-facing error messages, if needed.'
+          example: INVALID_REQUEST
+        message:
+          type: string
+          description: 'A high-level error message, in English.
+
+            The message is not localized and is intended for developer consumption.
+
+            It is recommended to use the reason code as a key for localization of
+
+            user-facing error messages, if needed.'
+          example: The request is invalid.
+        domain:
+          type: string
+          description: The logical domain from which the error originates
+          enum:
+          - Players
+          - Matches
+          example: Players
+        metadata:
+          type: object
+          description: 'Additional key-value pairs about the error, the request that caused the error,
+
+            or the state of the system at the time of the error.'
+          additionalProperties:
+            type: string
+          example:
+            playerId: 09b74ba4-408f-4121-bf50-7edf11332a65
+            matchId: 2443ceef-3e4c-45a3-8d18-ff87e22c7cb6
+        error:
+          $ref: '#/components/schemas/ErrorInfo'
     PlayerRank:
       type: object
       required:
@@ -551,6 +693,195 @@ components:
 
             formatted as an ISO 8601 string.'
           example: '2024-01-01T00:10:00Z'
+    FailedPrecondition:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - FailedPrecondition
+          example: FailedPrecondition
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/PreconditionViolation'
+    ErrorInfo:
+      oneOf:
+      - $ref: '#/components/schemas/InvalidArgument'
+      - $ref: '#/components/schemas/NotFound'
+      - $ref: '#/components/schemas/PermissionDenied'
+      - $ref: '#/components/schemas/Unauthenticated'
+      - $ref: '#/components/schemas/ResourceExhausted'
+      - $ref: '#/components/schemas/FailedPrecondition'
+      - $ref: '#/components/schemas/Aborted'
+      - $ref: '#/components/schemas/OutOfRange'
+      - $ref: '#/components/schemas/Unimplemented'
+      - $ref: '#/components/schemas/Internal'
+      - $ref: '#/components/schemas/Unavailable'
+      - $ref: '#/components/schemas/DataLoss'
+      discriminator:
+        propertyName: status
+        mapping:
+          InvalidArgument: '#/components/schemas/InvalidArgument'
+          NotFound: '#/components/schemas/NotFound'
+          PermissionDenied: '#/components/schemas/PermissionDenied'
+          Unauthenticated: '#/components/schemas/Unauthenticated'
+          ResourceExhausted: '#/components/schemas/ResourceExhausted'
+          FailedPrecondition: '#/components/schemas/FailedPrecondition'
+          Aborted: '#/components/schemas/Aborted'
+          OutOfRange: '#/components/schemas/OutOfRange'
+          Unimplemented: '#/components/schemas/Unimplemented'
+          Internal: '#/components/schemas/Internal'
+          Unavailable: '#/components/schemas/Unavailable'
+          DataLoss: '#/components/schemas/DataLoss'
+    PermissionDenied:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - PermissionDenied
+          example: PermissionDenied
+    StatsSummedOverMatch:
+      type: object
+      required:
+      - type
+      - matchId
+      properties:
+        type:
+          type: string
+          enum:
+          - Match
+          example: Match
+        matchId:
+          type: string
+          description: The ID of the match
+          example: 2443ceef-3e4c-45a3-8d18-ff87e22c7cb6
+    StatsSummedOverCareer:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - Career
+          example: Career
+    Internal:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - Internal
+          example: Internal
+    QuotaViolation:
+      type: object
+      required:
+      - subject
+      - description
+      properties:
+        subject:
+          type: string
+          description: The subject of the quota violation
+          example: /v1/game/splitgate2/matches/{matchId}
+        description:
+          type: string
+          description: Description of the quota violation
+          example: The client has exceeded the maximum number of match detail requests per hour.
+    PlayerSearchResult:
+      type: object
+      required:
+      - playerId
+      - displayName
+      properties:
+        playerId:
+          type: string
+          description: Unique identifier for the player
+          example: 09b74ba4-408f-4121-bf50-7edf11332a65
+        displayName:
+          type: string
+          description: Player's display name
+          example: TheRizzler
+    Aborted:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - Aborted
+          example: Aborted
+    Unauthenticated:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - Unauthenticated
+          example: Unauthenticated
+    StatsSummedOverSeason:
+      type: object
+      required:
+      - type
+      - seasonSlug
+      properties:
+        type:
+          type: string
+          enum:
+          - Season
+          example: Season
+        seasonSlug:
+          type: string
+          description: The human-readable identifer for the season
+          example: season_0
+    DivisionalPlayerRankPlacement:
+      type: object
+      required:
+      - divisionPoints
+      - divisionPlacement
+      - maximumDivision
+      properties:
+        divisionPoints:
+          type: integer
+          description: 'The division points of the player within the division.
+
+            Once the player exceeds the point ceiling for the division,
+
+            they player will rank up to the next division.
+
+            Higher points indicate better performance.'
+          minimum: 0
+          maximum: 100
+          example: 0
+        divisionPointCeiling:
+          type: integer
+          description: 'The maximum points a player can have in a division.
+
+            Once the player exceeds this point ceiling, they will rank up to
+
+            the next division.
+
+            If absent, there is no point ceiling for the division.'
+          minimum: 0
+          example: 100
+        divisionPlacement:
+          type: integer
+          description: 'The 1-indexed division of the player within the rank (between 1
+
+            and maximumDivision).
+
+            The division is the rank of the player in the rank.
+
+            Higher division values indicate better performance.'
+          example: 1
+          minimum: 1
+        maximumDivision:
+          type: integer
+          description: 'The maximum division of the rank (i.e. the best division a
+
+            player can achieve in the rank.)'
+          example: 5
+          minimum: 1
     ResourceExhausted:
       type: object
       properties:
@@ -575,134 +906,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RequestViolation'
-    Unauthenticated:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - Unauthenticated
-          example: Unauthenticated
-    StatsSummedOverSeason:
-      type: object
-      required:
-      - type
-      - seasonSlug
-      properties:
-        type:
-          type: string
-          enum:
-          - Season
-          example: Season
-        seasonSlug:
-          type: string
-          description: The human-readable identifer for the season
-          example: season_0
-    StatsSummedOver:
-      oneOf:
-      - $ref: '#/components/schemas/StatsSummedOverCareer'
-      - $ref: '#/components/schemas/StatsSummedOverMatch'
-      - $ref: '#/components/schemas/StatsSummedOverSeason'
-      - $ref: '#/components/schemas/StatsSummedOverGameMode'
-      discriminator:
-        propertyName: type
-        mapping:
-          Career: '#/components/schemas/StatsSummedOverCareer'
-          Match: '#/components/schemas/StatsSummedOverMatch'
-          Season: '#/components/schemas/StatsSummedOverSeason'
-          GameMode: '#/components/schemas/StatsSummedOverGameMode'
-      example:
-        type: Career
-    OutOfRange:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - OutOfRange
-          example: OutOfRange
-    Aborted:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - Aborted
-          example: Aborted
-    RequestViolation:
-      type: object
-      required:
-      - field
-      - description
-      - reason
-      properties:
-        field:
-          type: string
-          description: The path to the field that caused the error
-          example: playerId
-        description:
-          type: string
-          description: Description of why the field is invalid
-          example: The player ID must not be empty.
-        reason:
-          type: string
-          description: The reason code for the violation
-          example: MISSING_REQUIRED
-    StatsSummedOverCareer:
-      type: object
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - Career
-          example: Career
-    DataLoss:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - DataLoss
-          example: DataLoss
-    StatsSummedOverMatch:
-      type: object
-      required:
-      - type
-      - matchId
-      properties:
-        type:
-          type: string
-          enum:
-          - Match
-          example: Match
-        matchId:
-          type: string
-          description: The ID of the match
-          example: 2443ceef-3e4c-45a3-8d18-ff87e22c7cb6
-    QuotaViolation:
-      type: object
-      required:
-      - subject
-      - description
-      properties:
-        subject:
-          type: string
-          description: The subject of the quota violation
-          example: /v1/game/splitgate2/matches/{matchId}
-        description:
-          type: string
-          description: Description of the quota violation
-          example: The client has exceeded the maximum number of match detail requests per hour.
-    PermissionDenied:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - PermissionDenied
-          example: PermissionDenied
     SummaryPlayerStats:
       type: object
       required:
@@ -1068,189 +1271,6 @@ components:
           xp: 22500
           roundWins: 170
           multikill2: 42
-    PreconditionViolation:
-      type: object
-      required:
-      - type
-      - subject
-      - description
-      properties:
-        type:
-          type: string
-          description: The type of precondition violation
-          example: MATCH_NOT_FINISHED
-        subject:
-          type: string
-          description: The subject of the precondition violation
-          example: /v1/game/splitgate2/matches/2443ceef-3e4c-45a3-8d18-ff87e22c7cb6
-        description:
-          type: string
-          description: Description of the precondition violation
-          example: The match has not finished yet.
-    Unavailable:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - Unavailable
-          example: Unavailable
-    PlayerRankPlacement:
-      type: object
-      oneOf:
-      - $ref: '#/components/schemas/AbsolutePlayerRankPlacement'
-      - $ref: '#/components/schemas/DivisionalPlayerRankPlacement'
-    Internal:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - Internal
-          example: Internal
-    NotFound:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - NotFound
-          example: NotFound
-    ErrorInfo:
-      oneOf:
-      - $ref: '#/components/schemas/InvalidArgument'
-      - $ref: '#/components/schemas/NotFound'
-      - $ref: '#/components/schemas/PermissionDenied'
-      - $ref: '#/components/schemas/Unauthenticated'
-      - $ref: '#/components/schemas/ResourceExhausted'
-      - $ref: '#/components/schemas/FailedPrecondition'
-      - $ref: '#/components/schemas/Aborted'
-      - $ref: '#/components/schemas/OutOfRange'
-      - $ref: '#/components/schemas/Unimplemented'
-      - $ref: '#/components/schemas/Internal'
-      - $ref: '#/components/schemas/Unavailable'
-      - $ref: '#/components/schemas/DataLoss'
-      discriminator:
-        propertyName: status
-        mapping:
-          InvalidArgument: '#/components/schemas/InvalidArgument'
-          NotFound: '#/components/schemas/NotFound'
-          PermissionDenied: '#/components/schemas/PermissionDenied'
-          Unauthenticated: '#/components/schemas/Unauthenticated'
-          ResourceExhausted: '#/components/schemas/ResourceExhausted'
-          FailedPrecondition: '#/components/schemas/FailedPrecondition'
-          Aborted: '#/components/schemas/Aborted'
-          OutOfRange: '#/components/schemas/OutOfRange'
-          Unimplemented: '#/components/schemas/Unimplemented'
-          Internal: '#/components/schemas/Internal'
-          Unavailable: '#/components/schemas/Unavailable'
-          DataLoss: '#/components/schemas/DataLoss'
-    ErrorResponse:
-      type: object
-      required:
-      - reason
-      - message
-      - domain
-      - metadata
-      - error
-      properties:
-        reason:
-          type: string
-          description: 'The reason code for the error.
-
-            The reason code is a short string that is used to identify the error.
-
-            The reason code is not localized and is intended for programmatic use.
-
-            It is recommended to use the reason code as a keyfor localization of
-
-            user-facing error messages, if needed.'
-          example: INVALID_REQUEST
-        message:
-          type: string
-          description: 'A high-level error message, in English.
-
-            The message is not localized and is intended for developer consumption.
-
-            It is recommended to use the reason code as a key for localization of
-
-            user-facing error messages, if needed.'
-          example: The request is invalid.
-        domain:
-          type: string
-          description: The logical domain from which the error originates
-          enum:
-          - Players
-          - Matches
-          example: Players
-        metadata:
-          type: object
-          description: 'Additional key-value pairs about the error, the request that caused the error,
-
-            or the state of the system at the time of the error.'
-          additionalProperties:
-            type: string
-          example:
-            playerId: 09b74ba4-408f-4121-bf50-7edf11332a65
-            matchId: 2443ceef-3e4c-45a3-8d18-ff87e22c7cb6
-        error:
-          $ref: '#/components/schemas/ErrorInfo'
-    Unimplemented:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - Unimplemented
-          example: Unimplemented
-    FailedPrecondition:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - FailedPrecondition
-          example: FailedPrecondition
-        violations:
-          type: array
-          items:
-            $ref: '#/components/schemas/PreconditionViolation'
-    AbsolutePlayerRankPlacement:
-      type: object
-      required:
-      - absolutePoints
-      - absolutePlacement
-      - maximumPlacement
-      properties:
-        absolutePoints:
-          type: integer
-          description: 'The rank points of the player within the absolute rank.
-
-            There is no upper limit to the number of points a player can have in
-
-            an absolute placement rank.
-
-            Higher points indicate better performance.'
-          minimum: 0
-          example: 0
-        absolutePlacement:
-          type: integer
-          description: 'The 1-indexed placement of the player within the rank (between 1 and
-
-            maximumPlacement).
-
-            The placement is the rank of the player in the rank.
-
-            Lower placement values indicate better performance.'
-          minimum: 1
-          example: 1
-        maximumPlacement:
-          type: integer
-          description: 'The maximum placement of the rank (i.e. the worst placement a
-
-            player can achieve in the rank.)'
-          minimum: 1
-          example: 10
     PlayerMatch:
       type: object
       required:
@@ -1297,69 +1317,49 @@ components:
           example: Steam
         stats:
           $ref: '#/components/schemas/SummaryPlayerStats'
-    DivisionalPlayerRankPlacement:
+    Unavailable:
       type: object
-      required:
-      - divisionPoints
-      - divisionPlacement
-      - maximumDivision
       properties:
-        divisionPoints:
-          type: integer
-          description: 'The division points of the player within the division.
-
-            Once the player exceeds the point ceiling for the division,
-
-            they player will rank up to the next division.
-
-            Higher points indicate better performance.'
-          minimum: 0
-          maximum: 100
-          example: 0
-        divisionPointCeiling:
-          type: integer
-          description: 'The maximum points a player can have in a division.
-
-            Once the player exceeds this point ceiling, they will rank up to
-
-            the next division.
-
-            If absent, there is no point ceiling for the division.'
-          minimum: 0
-          example: 100
-        divisionPlacement:
-          type: integer
-          description: 'The 1-indexed division of the player within the rank (between 1
-
-            and maximumDivision).
-
-            The division is the rank of the player in the rank.
-
-            Higher division values indicate better performance.'
-          example: 1
-          minimum: 1
-        maximumDivision:
-          type: integer
-          description: 'The maximum division of the rank (i.e. the best division a
-
-            player can achieve in the rank.)'
-          example: 5
-          minimum: 1
-    StatsSummedOverGameMode:
-      type: object
-      required:
-      - type
-      - matchTypeSlug
-      properties:
-        type:
+        status:
           type: string
           enum:
-          - MatchType
-          example: MatchType
-        matchTypeSlug:
+          - Unavailable
+          example: Unavailable
+    RequestViolation:
+      type: object
+      required:
+      - field
+      - description
+      - reason
+      properties:
+        field:
           type: string
-          description: The human-readable identifer for the match type
-          example: arenaranked
+          description: The path to the field that caused the error
+          example: playerId
+        description:
+          type: string
+          description: Description of why the field is invalid
+          example: The player ID must not be empty.
+        reason:
+          type: string
+          description: The reason code for the violation
+          example: MISSING_REQUIRED
+    NotFound:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - NotFound
+          example: NotFound
+    OutOfRange:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - OutOfRange
+          example: OutOfRange
   securitySchemes:
     bearerToken:
       type: http
