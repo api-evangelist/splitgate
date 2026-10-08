@@ -134,6 +134,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: RateLimits
+  url: rate-limits/splitgate-rate-limits.yml
 - type: IssueTracker
   url: https://github.com/1047Games/sdk-api/issues
 - type: AgentSkill
